@@ -1,0 +1,113 @@
+/*
+       document : style.css, for cs-portfolio
+     created on : monday, october 12, 2015, (time unknown)
+         author : adrielo (audrey) bongalon
+    description : css stylesheet, for 10th grade computer science expeditions course
+
+
+             .8.       8 8888      88 8 888888888o.      8 888888888o.   8 8888888888 `8.`8888.      ,8'
+            .888.      8 8888      88 8 8888    `^888.   8 8888    `88.  8 8888        `8.`8888.    ,8'
+           :88888.     8 8888      88 8 8888        `88. 8 8888     `88  8 8888         `8.`8888.  ,8'
+          . `88888.    8 8888      88 8 8888         `88 8 8888     ,88  8 8888          `8.`8888.,8'
+         .8. `88888.   8 8888      88 8 8888          88 8 8888.   ,88'  8 888888888888   `8.`88888'
+        .8`8. `88888.  8 8888      88 8 8888          88 8 888888888P'   8 8888            `8. 8888
+       .8' `8. `88888. 8 8888      88 8 8888         ,88 8 8888`8b       8 8888             `8 8888
+      .8'   `8. `88888.` 8888     ,8P 8 8888        ,88' 8 8888 `8b.     8 8888              8 8888
+     .888888888. `88888. 8888   ,d8P  8 8888    ,o88P'   8 8888   `8b.   8 8888              8 8888
+    .8'       `8. `88888. `Y88888P'   8 888888888P'      8 8888     `88. 8 888888888888      8 8888
+
+*/
+
+
+
+
+root {
+    display: block;
+}
+
+
+
+
+html {
+    background: url("modern_wallpaper1.jpg") no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+
+
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+
+
+
+.rainbow-animation {
+    height: 100%;
+    width: 100%;
+    left:0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    position: absolute;
+
+    background: linear-gradient(180deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
+    background-size: 1800% 1800%;
+
+    -webkit-animation: rainbow 27s ease infinite;
+    -moz-animation: rainbow 27s ease infinite;
+    -z-animation: rainbow 27s ease infinite;
+    -o-animation: rainbow 27s ease infinite;
+    animation: rainbow 27s ease infinite;
+}
+
+@-webkit-keyframes rainbow {
+    0%{background-position:0% 82%}
+    50%{background-position:100% 19%}
+    100%{background-position:0% 82%}
+}
+
+@-moz-keyframes rainbow {
+    0%{background-position:0% 82%}
+    50%{background-position:100% 19%}
+    100%{background-position:0% 82%}
+}
+
+@-o-keyframes rainbow {
+    0%{background-position:0% 82%}
+    50%{background-position:100% 19%}
+    100%{background-position:0% 82%}
+}
+
+@keyframes rainbow { 
+    0%{background-position:0% 82%}
+    50%{background-position:100% 19%}
+    100%{background-position:0% 82%}
+}
+
+
+
+
+.header {
+    font-family: "Poppins", sans-serif;
+    color: #ffffff;
+    font-size: 40px;
+    padding: 0;
+    margin: 20px 40px 5px;
+}
+
+
+
+
+#canvas {
+    margin: 0 40px;
+}
