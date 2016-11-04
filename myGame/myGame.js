@@ -23,9 +23,6 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, "canvas");
 var game_state = {};
 
 var i = 0;
-var player_dir_x = 0;
-var player_LR = "front";
-var animationTimer = 0;
 
 
 
@@ -82,6 +79,10 @@ game_state.main.prototype = {
         game.add.sprite(0, 0, "sky");
         // game.add.sprite(25, 40, "star");                                     // i don't need a star just floating there
         this.player = game.add.sprite(game.world.width - 50, game.world.height - 250, "dood");
+        this.player.animationDirX = 0;
+        console.log(this.player);
+        this.player.LR = "front";
+        this.player.animationCounter = 0;
 
 
 
@@ -194,42 +195,42 @@ game_state.main.prototype = {
 
         // reset player velocity & direction
         this.player.body.velocity.x = 0;
-        player_dir_x = 0;
+        this.player.animationDirX = 0;
         
         // keypress detecton
         if (this.cursors.left.isDown) {
-            player_dir_x -= 1;
+            this.player.animationDirX -= 1;
         }
         if (this.cursors.right.isDown) {
-            player_dir_x += 1;
+            this.player.animationDirX += 1;
         }
-        if (player_dir_x < 0) {
+        if (this.player.animationDirX < 0) {
             this.player.body.velocity.x = -150;
             this.player.animations.play("left");
-            player_LR = "left";
-            animationTimer = 0;
+            this.player.LR = "left";
+            this.player.animationCounter = 0;
         }
-        if (player_dir_x > 0) {
+        if (this.player.animationDirX > 0) {
             this.player.body.velocity.x = 150;
             this.player.animations.play("right");
-            player_LR = "right";
-            animationTimer = 0;
+            this.player.LR = "right";
+            this.player.animationCounter = 0;
         }
-        if (player_dir_x == 0) {
+        if (this.player.animationDirX == 0) {
             this.player.animations.stop();
 
-            if (animationTimer >= 50) {
+            if (this.player.animationCounter >= 50) {
                 this.player.frame = 4;
             }
-            else if (player_LR == "left") {
+            else if (this.player.LR == "left") {
                 this.player.frame = 0;
             }
-            else if (player_LR == "right") {
+            else if (this.player.LR == "right") {
                 this.player.frame = 5;
             }
         }
 
-        animationTimer++;
+        this.player.animationCounter++;
 
 
 
