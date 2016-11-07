@@ -17,7 +17,7 @@
                                                                     d8'
 */
 
-// global phaser
+/* global Phaser */                                                             // tells the IDE that Phaser exists in another file
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, "canvas");
 var game_state = {};
@@ -27,7 +27,7 @@ var i = 0;
 
 
 
-game_state.main = function () {};
+game_state.main = function() {};
 game_state.main.prototype = {
 
 /*
@@ -48,7 +48,7 @@ game_state.main.prototype = {
         game.load.image("ground", "assets/platform.png");
         game.load.image("star", "assets/star.png");
         game.load.spritesheet("audrey", "assets/audreyPixelSprite.png", 136, 224);
-        game.load.script('webfont', "//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js");
+        game.load.script("webfont", "//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js");
 	},
 
 
@@ -72,40 +72,45 @@ game_state.main.prototype = {
 */
 
     create: function() {
-        // creates the in-game physics from the phaser library
-        game.physics.startSystem(Phaser.Physics.ARCADE);
+        game.physics.startSystem(Phaser.Physics.ARCADE);                        // creates the in-game physics from the phaser library
 
         // adds sprites
-        game.add.sprite(0, 0, "sky");
+        game.add.sprite(0, 0, "sky");                                           // add sky background
         // game.add.sprite(25, 40, "star");                                     // i don't need a star just floating there
+
+        // add audrey sprite
         this.player = game.add.sprite(game.world.width - 50, game.world.height - 250, "audrey");
-        this.player.scale.setTo(0.25, 0.25);
-        this.player.animationDirX = 0;
-        this.player.LR = "front";
-        this.player.animationCounter = 0;
+        this.player.scale.setTo(0.3, 0.3);                                    // resize audrey
+
+
+        this.player.animationDirX = 0;                                          // manages direction of audrey
+        this.player.LR = "front";                                               // start off facing forwards
+        this.player.animationCounter = 0;                                       // resets counter that makes her face forwards after waiting for some time
 
         // enable physics on the player
-        game.physics.arcade.enable(this.player);
-        this.player.body.gravity.y = 1200;
-        this.player.body.bounce.y = 0.3;
-        this.player.body.collideWorldBounds = true;
+        game.physics.arcade.enable(this.player);                                // enable physics
+        this.player.body.setSize(72, 224, 8, 0);                                // hitbox size management
+        this.player.body.gravity.y = 1200;                                      // gravity
+        this.player.body.bounce.y = 0.3;                                        // bounce
+        game.physics.arcade.setBounds(0, 0, game.world.width, game.world.height);
+        this.player.body.collideWorldBounds = true;                             // makes sure you can't fall off the map
 
         // player animation
-        this.player.animations.add("left", [0, 2, 1, 2], 5, true);             // i switched the order to prevent audrey
-        this.player.animations.add("right", [6, 4, 5, 4], 5, true);            // from looking like she's "sliding"
-        this.player.frame = 3;
+        this.player.animations.add("left", [0, 2, 1, 2], 5, true);              // order to of frames to run moving animation
+        this.player.animations.add("right", [6, 4, 5, 4], 5, true);
+        this.player.frame = 3;                                                  // start facing forwards
 
 
 
 
         // creates a group for the ground and platforms
-        this.platforms = game.add.group();
-        this.platforms.enableBody = true;       // applies game physics
+        this.platforms = game.add.group();                                      // creates a group for all the platforms
+        this.platforms.enableBody = true;                                       // applies game physics to that group
 
         // creates the ground
         var ground = this.platforms.create(0, game.world.height - 64, "ground");
-        ground.scale.setTo(2, 2);               // scales to stretch across canvas
-        ground.body.immovable = true;           // make ground immoveable
+        ground.scale.setTo(2, 2);                                               // scales to stretch across canvas
+        ground.body.immovable = true;                                           // make ground immoveable
 
         // creates the platforms
         for (i = 0; i < 6; i++) {
@@ -148,7 +153,7 @@ game_state.main.prototype = {
 
 
         // keyboard controls
-        this.cursors = game.input.keyboard.createCursorKeys();
+        this.arrowKeys = game.input.keyboard.createCursorKeys();
 
 
 
@@ -182,6 +187,8 @@ game_state.main.prototype = {
 */
 
     update: function() {
+        // game.debug.body(this.player);                                        // to view hitbox
+
         // collision detection
         game.physics.arcade.collide(this.player, this.platforms);                               // player on platforms
         game.physics.arcade.collide(this.stars, this.platforms);                                // stars on platforms
@@ -195,10 +202,10 @@ game_state.main.prototype = {
         this.player.animationDirX = 0;
         
         // keypress detecton
-        if (this.cursors.left.isDown) {
+        if (this.arrowKeys.left.isDown) {
             this.player.animationDirX -= 1;
         }
-        if (this.cursors.right.isDown) {
+        if (this.arrowKeys.right.isDown) {
             this.player.animationDirX += 1;
         }
         if (this.player.animationDirX < 0) {
@@ -233,7 +240,7 @@ game_state.main.prototype = {
 
 
         // jumping
-        if (this.cursors.up.isDown && this.player.body.touching.down) {
+        if (this.arrowKeys.up.isDown && this.player.body.touching.down) {
             this.player.body.velocity.y = -500;
         }
     },
@@ -242,11 +249,11 @@ game_state.main.prototype = {
 
 
     collectStars: function(player, star) {
-        star.kill();    // removes the star
-        this.score += 1;
-        this.scoreText.text = "score: " + this.score;
+        star.kill();                                                            // removes the star
+        this.score++;                                                           // updates the score
+        this.scoreText.text = "score: " + this.score;                           // updates the text to display the score
     }
 };
 
 game.state.add("main", game_state.main);
-game.state.start("main");
+// game.state.start("main");

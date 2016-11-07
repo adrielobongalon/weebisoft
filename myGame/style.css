@@ -29,7 +29,7 @@ root {
 
 
 html {
-    background: url("modern_wallpaper1.jpg") no-repeat center center fixed; 
+    background: #ffffff;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
