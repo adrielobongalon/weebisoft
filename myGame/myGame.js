@@ -47,7 +47,7 @@ game_state.main.prototype = {
         game.load.image("sky", "assets/sky.png");
         game.load.image("ground", "assets/platform.png");
         game.load.image("star", "assets/star.png");
-        game.load.spritesheet("dood", "assets/dude.png", 32, 48);
+        game.load.spritesheet("audrey", "assets/audreyPixelSprite.png", 136, 224);
         game.load.script('webfont', "//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js");
 	},
 
@@ -78,11 +78,22 @@ game_state.main.prototype = {
         // adds sprites
         game.add.sprite(0, 0, "sky");
         // game.add.sprite(25, 40, "star");                                     // i don't need a star just floating there
-        this.player = game.add.sprite(game.world.width - 50, game.world.height - 250, "dood");
+        this.player = game.add.sprite(game.world.width - 50, game.world.height - 250, "audrey");
+        this.player.scale.setTo(0.25, 0.25);
         this.player.animationDirX = 0;
-        console.log(this.player);
         this.player.LR = "front";
         this.player.animationCounter = 0;
+
+        // enable physics on the player
+        game.physics.arcade.enable(this.player);
+        this.player.body.gravity.y = 1200;
+        this.player.body.bounce.y = 0.3;
+        this.player.body.collideWorldBounds = true;
+
+        // player animation
+        this.player.animations.add("left", [0, 2, 1, 2], 5, true);             // i switched the order to prevent audrey
+        this.player.animations.add("right", [6, 4, 5, 4], 5, true);            // from looking like she's "sliding"
+        this.player.frame = 3;
 
 
 
@@ -132,20 +143,6 @@ game_state.main.prototype = {
             star.body.gravity.y = Math.floor(Math.random() * (350 - 250 + 1)) + 250;    // random number between 250 and 350
             star.body.bounce.y = 1;
         }
-
-
-
-
-        // enable physics on the player
-        game.physics.arcade.enable(this.player);
-        this.player.body.gravity.y = 1200;
-        this.player.body.bounce.y = 0.3;
-        this.player.body.collideWorldBounds = true;
-
-        // player animation
-        this.player.animations.add("left", [1, 2, 3, 0], 10, true);             // i switched the order to prevent the dood
-        this.player.animations.add("right", [8, 5, 6, 7], 10, true);            // from looking like he's "sliding"
-        this.player.frame = 4;
 
 
 
@@ -220,13 +217,13 @@ game_state.main.prototype = {
             this.player.animations.stop();
 
             if (this.player.animationCounter >= 50) {
-                this.player.frame = 4;
+                this.player.frame = 3;
             }
             else if (this.player.LR == "left") {
-                this.player.frame = 0;
+                this.player.frame = 2;
             }
             else if (this.player.LR == "right") {
-                this.player.frame = 5;
+                this.player.frame = 4;
             }
         }
 
