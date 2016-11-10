@@ -1,5 +1,5 @@
 /*
-       document : story.js, for firstphasergame
+       document : intro.js, for firstphasergame
      created on : monday, november 7, 2016, 10:39 AM
          author : adrielo (audrey) bongalon
     description : to be run before the main part (myGame.js), for 11th grade video game programming expeditions course
@@ -39,7 +39,8 @@ game_state.intro.prototype = {
 */
 
 	preload: function() {
-        game.load.image("sky", "assets/sky.png");
+	    game.load.image("black", "assets/blackBG.png");
+        game.load.image("sky", "assets/sky2.png");
         game.load.script("webfont", "//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js");
 	},
 
@@ -65,8 +66,14 @@ game_state.intro.prototype = {
 
     create: function() {
         game.add.sprite(0, 0, "sky");                                           // add sky background
+        this.spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);   // adds event listener on spacebar
 
-        this.spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        // black box, used for fades
+        this.black = game.add.sprite(0, 0, "black");
+        this.black.alpha = 0;
+        this.fade = game.add.tween(this.black);
+        this.fade.to({alpha: 1}, 1000, Phaser.Easing.Linear.None, false, 0, 0, false);
+        this.fade.onComplete.add(this.switchState, this);
     },
 
 
@@ -91,10 +98,17 @@ game_state.intro.prototype = {
 
     update: function() {
         if (this.spacebar.isDown) {
-            console.log("switching to main state");
-            game.state.start("main");
+            this.fade.start();
         }
     },
+
+    switchState: function() {
+        console.log("switching to main state");
+        game.state.start("main");
+
+        //      -_-     transition doesn't work because of WebGL
+        // game.state.start("main", Phaser.Plugin.StateTransition.Out.SlideTop, Phaser.Plugin.StateTransition.In.SlideTop);
+    }
 };
 
 game.state.add("intro", game_state.intro);

@@ -22,12 +22,17 @@
         <title>Audrey - first phaser game, part 9</title>
         <link rel="stylesheet" type="text/css" href="style.css">
         <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
-        <script src="//cdn.jsdelivr.net/phaser/2.2.2/phaser.min.js"></script>
     </head>
     <body class="rainbow-animation">
+        <!-- i couldn't preload fonts into phaser, but putting text in that font
+        before the game canvas forces it to load. it's not very clean, but it's
+        effective -->
         <h1 class="header">audrey's game</h1>
+
         <div id="canvas"></div>
+        <script src="//cdn.jsdelivr.net/phaser/2.2.2/phaser.min.js"></script>
+        <script type="text/javascript" src="phaser-state-transition-master/dist/phaser-state-transition.min.js"></script>
         <script type="text/javascript" src="myGame.js"></script>
-        <script type="text/javascript" src="story.js"></script>
+        <script type="text/javascript" src="intro.js"></script>
     </body>
 </html>
