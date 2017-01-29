@@ -1,8 +1,9 @@
 /*
-       document : style.css, for cs-portfolio
-     created on : monday, october 12, 2015, (time unknown)
+       document : style.css, for weebisoft
+     created on : late october 2016, (time and date unknown)
+      cloned on : tuesday, january 24, 2017, 12:02 pm
          author : adrielo (audrey) bongalon
-    description : css stylesheet, for 10th grade computer science expeditions course
+    description : css stylesheet, for 11th grade computer science expeditions course
 
 
              .8.       8 8888      88 8 888888888o.      8 888888888o.   8 8888888888 `8.`8888.      ,8'
@@ -100,9 +101,9 @@ body {
 .header {
     font-family: "Poppins", sans-serif;
     color: #ffffff;
-    font-size: 40px;
+    font-size: 25px;
     padding: 0;
-    margin: 20px 40px 5px;
+    margin: 10px 40px 5px;
 }
 
 

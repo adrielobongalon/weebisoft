@@ -1,9 +1,9 @@
 /*
-       document : intro.js, for weebisoft
+       document : ending.js, for weebisoft
      created on : thursday, november 10, 2016, 09:33 am
-      cloned on : thursday, january 26, 2017, 11:57 am
+      cloned on : thursday, january 26, 2017, 11:58 am
          author : adrielo (audrey) bongalon
-    description : intro, for 11th grade video game programming expeditions course
+    description : outro, for 11th grade video game programming expeditions course
 
 
                                       88
@@ -23,8 +23,8 @@
 
 
 
-game_state.intro = function() {};
-game_state.intro.prototype = {
+game_state.ending = function() {};
+game_state.ending.prototype = {
 
 /*
     8 888888888o    8 888888888o.    8 888888888888  8 8888           ,o888888o.            .8.          8 888888888o.
@@ -70,7 +70,7 @@ game_state.intro.prototype = {
         this.spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);   // adds event listener on spacebar
 
         this.text1 = game.add.text(10, 10,
-            "intro",
+            "outro",
             {
                 font: "20px Poppins",
                 fill: "#ffffff"
@@ -79,10 +79,9 @@ game_state.intro.prototype = {
 
         // black box, used for fades
         this.black = game.add.sprite(0, 0, "black");
-        this.black.alpha = 0;
-        this.fadeIn = game.add.tween(this.black);
-        this.fadeIn.to({alpha: 1}, 1000, Phaser.Easing.Linear.None, false, 0, 0, false);
-        this.fadeIn.onComplete.add(this.switchState, this);
+        this.black.alpha = 1;
+        this.fade = game.add.tween(this.black);
+        this.fade.to({alpha: 0}, 500, Phaser.Easing.Linear.None, true, 0, 0, false);
     },
 
 
@@ -106,23 +105,8 @@ game_state.intro.prototype = {
 */
 
     update: function() {
-        if (this.spacebar.isDown) {
-            this.fadeIn.start();
-        }
+        // nothing
     },
-
-
-
-
-
-
-
-
-    switchState: function() {
-        console.log("switching to level 1 state");
-        game.state.start("level1");
-    }
 };
 
-game.state.add("intro", game_state.intro);
-game.state.start("intro");
+game.state.add("ending", game_state.ending);

@@ -1,34 +1,52 @@
 /*
-       document : myGame.js, for firstphasergame
-     created on : monday, october 31, 2016, 10:42 AM
+       document : level1.js, for weebisoft
+     created on : monday, october 31, 2016, 10:42 am
+      cloned on : tuesday, january 24, 2017, 12:06 pm
          author : adrielo (audrey) bongalon
     description : js file for my game, for 11th grade video game programming expeditions course
 
+http://gaa.o-oku.jp/
+ウィビソフト
 
-                                      88
-                                      88
-                                      88
-    ,adPPYYba,  88       88   ,adPPYb,88  8b,dPPYba,   ,adPPYba,  8b       d8
-    ""     `Y8  88       88  a8"    `Y88  88P'   "Y8  a8P,,,,,88  `8b     d8'
-    ,adPPPPP88  88       88  8b      :88  88          8PP"""""""   `8b   d8'
-    88,    ,88  "8a,   ,a88  "8a,   ,d88  88          "8b,   ,aa    `8b,d8'
-    `"8bbdP"Y8   `"YbbdP'Y8   `"8bbdP"Y8  88           `"Ybbd8"'      Y88'
-                                                                     d8'
-                                                                    d8'
+                                                                                                                     oogooo...
+              ,oooooooooo,                                                          ,oooooooooo,             `"8bo..    `b.   `8b.
+              888      888                                             ,od88bo.     888      888                `^o. `8b.  `b   88
+ ,oooooooooooo888      888oooooooooooooooo,                         ,,8^"    `8b    888      888                   "b.  `8b. `^^"
+888                                     888                      ,,88P"       88    888      888          ,,oooo..  `b.  ,88
+888       oooooooooooooooooooooooo      888                   ,,88^"        ,8P"    888      888      ,,d8^"  `^88b.  `^^^"
+888      888                   888      888               ,,88P^"        ,,8P^"     888      8888P^^"""          `88b
+888      888                   88"      888         ,,o88P^"         ,,88P"         888      ""              ,,,o888"
+888      888                 ,88"       88"   ,,o888P^"            888""            888              ,,goo88P^""
+"88oooooo88"               ,d8P"       d8P   d8P"           ,      888              888      od888P^""
+                       ,,o8P"        ,d8P    88b,      ,,o888      888              Y88      Y88,              ,,,,,
+                ,,,od8P^"          ,d8P"      `Y88888P^^""888      888               88       `^Y88booooooooo^"   `88o.
+      `8888888^^""             ,,d8^"                     888      888               `8b,                           `88b.
+        88                ,,o88P^"                        888      888                 `8o,                          ,88b
+        `Y8g,,,,,,,,,,,gd88P^"                            "88oooooo88"                    `^^Y88888888888888888888888P^"
+
+
+   ,,,,,,,,,                  ,oooooooooo,   |                                            |   888"""""""88
+88"""    "88,,                88       888   |  888""""""""""""""""""""""""""""""""""888  |     88       88
+ 88       ""8,,               88       888   |  88                                   88   |      88       88
+  8,,       ""8,,            ,88       88P   |   """""""""""""""""""""""""88        888   |       88       88,,,,,,
+  "88,       "88,           ,88       ,88"   |                            ,88       88"   |        88           """"""88,,,,,,
+    88,       "8,,         88"        ,8"    |                          ,88"        88    |         888                 """""88,,,,,
+     "88,   ,,,,,88"     ,,8""       ,88"    |                         ,88"       ,88"    |          888       88"88,,,,,,       """"""8,,,,
+      """"""""""       ,8"""        ,88"     |                        ,,8""       ,88"    |           88       88    """""88,,,,,      ,,88"
+                ,,,,88"""         ,,88"      |                   ,,,,88"""       ,8""     |            888      88          """"88,,,,,,,,8"""
+       ,,,,,,,88"""""          ,,88""        |            ,,,,,,,,88"""""      ,,88""     |             88       88
+  88""""""""""            ,,,88"""           |     ,88"""""""""""          ,,,,8""        |              8       88
+  88,              ,,,,,88"""""              |    88,           ,,,,,,,88""""""           |               88       88
+   "8,,,,,,,,8888""""""""                    |      88,,,,,888888"""""""""                |                88,,,,,88
 */
 
-/* global Phaser */                                                             // tells the IDE that Phaser exists in another file
-
-var game = new Phaser.Game(800, 600, Phaser.AUTO, "canvas");
-var game_state = {};
-
-var i = 0;
+/* global Phaser game game_state */                                             // tells the IDE that Phaser exists in another file
 
 
 
 
-game_state.main = function() {};
-game_state.main.prototype = {
+game_state.level1 = function() {};
+game_state.level1.prototype = {
 
 /*
     8 888888888o    8 888888888o.    8 888888888888  8 8888           ,o888888o.            .8.          8 888888888o.
@@ -44,11 +62,10 @@ game_state.main.prototype = {
 */
 
 	preload: function() {
-	    game.load.image("black", "assets/blackBG.png");
+        game.load.image("black", "assets/blackBG.png");
         game.load.image("sky", "assets/sky.png");
         game.load.image("ground", "assets/platform.png");
-        game.load.image("star", "assets/star.png");
-        game.load.spritesheet("audrey", "assets/audreyPixelSprite.png", 136, 224);
+        game.load.spritesheet("audrey", "assets/audrey_pixel_sprite.png", 136, 224);
         game.load.script("webfont", "//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js");
 	},
 
@@ -77,14 +94,17 @@ game_state.main.prototype = {
 
         // adds sprites
         game.add.sprite(0, 0, "sky");                                           // add sky background
-        // game.add.sprite(25, 40, "star");                                     // i don't need a star just floating there
+
+
+
+
 
 
 
 
         // add audrey sprite
-        this.player = game.add.sprite(game.world.width - 50, game.world.height - 250, "audrey");
-        this.player.scale.setTo(0.3, 0.3);                                      // resize audrey
+        this.player = game.add.sprite(10, game.world.height - 64 - 224, "audrey");
+        this.player.scale.setTo(1, 1);                                          // resize player
         this.player.alpha = 0;
 
         this.player.animationDirX = 0;                                          // manages direction of audrey
@@ -93,7 +113,7 @@ game_state.main.prototype = {
 
         // enable physics on the player
         game.physics.arcade.enable(this.player);                                // enable physics
-        this.player.body.setSize(72, 224, 8, 0);                                // hitbox size management
+        this.player.body.setSize(72, 224, 32, 0);                               // hitbox size management
         this.player.body.gravity.y = 0;                                         // start off in position (no gravity)
         this.player.body.bounce.y = 0.3;                                        // bounce
         this.player.canMoov = false;                                            // cannot move until spawned
@@ -108,7 +128,10 @@ game_state.main.prototype = {
         // fades audrey in
         this.fadeAudreyAnimation = game.add.tween(this.player);
         this.fadeAudreyAnimation.to({alpha: 1}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
-        this.fadeAudreyAnimation.onComplete.add(this.fadeStars, this);
+
+
+
+
 
 
 
@@ -116,58 +139,15 @@ game_state.main.prototype = {
         // creates a group for the ground and platforms
         this.platforms = game.add.group();                                      // creates a group for all the platforms
         this.platforms.enableBody = true;                                       // applies game physics to that group
-        this.platforms.alpha = 0;
 
         // creates the ground
         this.ground = this.platforms.create(0, game.world.height - 64, "ground");
-        this.ground.scale.setTo(2, 2);                                          // scales to stretch across canvas
+        this.ground.scale.setTo(3, 2);                                          // scales to stretch across canvas
         this.ground.body.immovable = true;                                      // make ground immoveable
 
-        // creates the platforms
-        for (i = 0; i < 6; i++) {
-            // top platform
-            if (i == 0) {
-                this.ledge1 = this.platforms.create(10, game.world.height / 8, "ground");
-                this.ledge1.scale.setTo(0.5, 0.75);
-                this.ledge1.body.immovable = true;
-            }
-            // next three
-            else if (i >= 1 && i <= 3) {
-                this.ledge2 = this.platforms.create(25 * Math.pow(i, 2) + 75 * i + 100, game.world.height * ((i + 1) / 8), "ground");
-                this.ledge2.scale.setTo(0.3, 0.75);
-                this.ledge2.body.immovable = true;
-            }
-            // bottom two
-            else if (i >= 4) {
-                this.ledge3 = this.platforms.create(-200 * i + 1200, game.world.height * ((i + 1) / 8), "ground");
-                this.ledge3.scale.setTo(0.3, 0.75);
-                this.ledge3.body.immovable = true;
-            }
-        }
-
-        // fades the platforms group in
-        this.fadePlatformsAnimation = game.add.tween(this.platforms);
-        this.fadePlatformsAnimation.to({alpha: 1}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
-        this.fadePlatformsAnimation.onComplete.add(this.fadeAudrey, this);
 
 
 
-
-        this.stars = game.add.group();                                          // create group for stars
-        this.stars.enableBody = true;                                           // enable physics
-        this.stars.alpha = 0;
-
-        // create the individual stars
-        for (i = 0; i < 11; i++) {
-            this.star = this.stars.create(i * 65 + 25, 10, "star");
-            this.star.body.gravity.y = 0;
-            this.star.body.bounce.y = 1;
-        }
-
-        // fades the stars
-        this.fadeStarsAnimation = game.add.tween(this.stars);
-        this.fadeStarsAnimation.to({alpha: 1}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
-        this.fadeStarsAnimation.onComplete.add(this.fadeScore, this);
 
 
 
@@ -178,16 +158,7 @@ game_state.main.prototype = {
 
 
 
-        // score display
-        this.score = 0;
-        this.scoreText = game.add.text(game.world.width - 100, 10, "score: " + this.score, {
-            font: "20px Poppins",
-            fill: "#00ffff"
-        });
-        this.scoreText.alpha = 0;
 
-        // fades the score GUI in. note that this can be written on just 1 line (compared to other things i faded in)
-        this.fadeScoreAnimation = game.add.tween(this.scoreText).to({alpha: 1}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
 
 
 
@@ -197,7 +168,16 @@ game_state.main.prototype = {
         this.black.alpha = 1;
         this.fadeInAnimation = game.add.tween(this.black);
         this.fadeInAnimation.to({alpha: 0}, 500, Phaser.Easing.Linear.None, true, 0, 0, false);
-        this.fadeInAnimation.onComplete.add(this.fadePlatforms, this);
+        this.fadeInAnimation.onComplete.add(this.fadeAudrey, this);
+        this.fadeOutAnimation = game.add.tween(this.black);
+        this.fadeOutAnimation.onComplete.add(this.switchState, this);
+        this.fadeOutAnimation.to({alpha: 1}, 1000, Phaser.Easing.Linear.None, false, 1750, 0, false);
+
+
+
+
+        // to make sure the switchState function is called only once
+        this.switching = false;
     },
 
 
@@ -221,12 +201,16 @@ game_state.main.prototype = {
 */
 
     update: function() {
-        // game.debug.body(this.player);                                        // to view hitbox
+        game.debug.body(this.player);                                           // to view hitbox
 
         // collision detection
         game.physics.arcade.collide(this.player, this.platforms);                               // player on platforms
         game.physics.arcade.collide(this.stars, this.platforms);                                // stars on platforms
-        game.physics.arcade.overlap(this.player, this.stars, this.collectStars, null, this);    // player on stars
+        // game.physics.arcade.overlap(this.player, this.stars, this.collectStars, null, this);    // player on stars
+
+
+
+
 
 
 
@@ -234,23 +218,25 @@ game_state.main.prototype = {
         // reset player velocity & direction
         this.player.body.velocity.x = 0;
         this.player.animationDirX = 0;
+        this.player.walkSpeed = 175;
+        this.player.walkFrameRate = 5;                                          // 5 frames per second
         
         // keypress detecton
         if (this.player.canMoov && this.arrowKeys.left.isDown) {
-            this.player.animationDirX -= 1;
+            this.player.animationDirX--;
         }
         if (this.player.canMoov && this.arrowKeys.right.isDown) {
-            this.player.animationDirX += 1;
+            this.player.animationDirX++;
         }
         if (this.player.animationDirX < 0) {
-            this.player.body.velocity.x = -150;
-            this.player.animations.play("left");
+            this.player.body.velocity.x = -1 * this.player.walkSpeed;
+            this.player.animations.play("left", this.player.walkFrameRate, true);
             this.player.LR = "left";
             this.player.animationCounter = 0;
         }
         if (this.player.animationDirX > 0) {
-            this.player.body.velocity.x = 150;
-            this.player.animations.play("right");
+            this.player.body.velocity.x = this.player.walkSpeed;
+            this.player.animations.play("right", this.player.walkFrameRate, true);
             this.player.LR = "right";
             this.player.animationCounter = 0;
         }
@@ -286,42 +272,47 @@ game_state.main.prototype = {
             this.player.canMoov = true;
             console.log("audrey movement enabled");
         }
+
+
+
+
+
+
+
+
+        // win detection
+        // if (this.score >= this.stars.length && !this.switching) {
+        if (this.score >= 1 && !this.switching) {
+            this.switching = true;
+            console.log("all stars collected");
+            this.fadeOutAnimation.start();
+        }
     },
 
 
 
 
-    collectStars: function(player, star) {
-        star.kill();                                                            // removes the star
-        this.score++;                                                           // updates the score
-        this.scoreText.text = "score: " + this.score;                           // updates the text to display the score
-    },
 
 
 
 
-    fadePlatforms: function() {
-        this.fadePlatformsAnimation.start();
-        console.log("platforms spawned");
-    },
     fadeAudrey: function() {
         this.fadeAudreyAnimation.start();                                       // fade in
-        this.player.body.gravity.y = 1200;                                      // enable gravity
+        this.player.body.gravity.y = 2100;                                      // enable gravity
         console.log("audrey spawned");
     },
-    fadeStars: function() {
-        this.fadeStarsAnimation.start();
-        this.stars.forEach(function(star) {
-            star.body.gravity.y = Math.floor(Math.random() * (350 - 250 + 1)) + 250;    // random number between 250 and 350;
-            
-        });
-        console.log("stars spawned");
-    },
-    fadeScore: function() {
-        this.fadeScoreAnimation.start();
-        console.log("score GUI spawned");
+
+
+
+
+
+
+
+
+    switchState: function() {
+        console.log("switching to end state");
+        game.state.start("ending");
     }
 };
 
-game.state.add("main", game_state.main);
-// game.state.start("main");
+game.state.add("level1", game_state.level1);
