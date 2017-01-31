@@ -14,8 +14,8 @@
     ,adPPPPP88  88       88  8b      :88  88          8PP"""""""   `8b   d8'
     88,    ,88  "8a,   ,a88  "8a,   ,d88  88          "8b,   ,aa    `8b,d8'
     `"8bbdP"Y8   `"YbbdP'Y8   `"8bbdP"Y8  88           `"Ybbd8"'      Y88'
+                                                                      d8'
                                                                      d8'
-                                                                    d8'
 */
 
 /* global Phaser game_state game */                                             // tells the IDE that Phaser exists in another file
@@ -35,12 +35,11 @@ game_state.intro.prototype = {
     8 888888888P'   8 888888888P'    8 8888          8 8888       88 8888         88   .8`8. `88888.     8 8888          88
     8 8888          8 8888`8b        8 8888          8 8888       88 8888        ,8P  .8' `8. `88888.    8 8888         ,88
     8 8888          8 8888 `8b.      8 8888          8 8888       `8 8888       ,8P  .8'   `8. `88888.   8 8888        ,88'
-    8 8888          8 8888   `8b.    8 8888          8 8888        ` 8888     ,88'  .888888888. `88888.  8 8888    ,o88P'
+    8 8888          8 8888   `8b.    8 8888          8 8888        ` 8888     ,88'  .888888888. `88888.  8 8888     ,o8P'
     8 8888          8 8888     `88.  8 888888888888  8 888888888888   `8888888P'   .8'       `8. `88888. 8 888888888P'
 */
 
 	preload: function() {
-	    game.load.image("black", "assets/blackBG.png");
         game.load.image("sky", "assets/sky2.png");
         game.load.script("webfont", "//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js");
 	},
@@ -77,12 +76,8 @@ game_state.intro.prototype = {
             }
         );
 
-        // black box, used for fades
-        this.black = game.add.sprite(0, 0, "black");
-        this.black.alpha = 0;
-        this.fadeIn = game.add.tween(this.black);
-        this.fadeIn.to({alpha: 1}, 1000, Phaser.Easing.Linear.None, false, 0, 0, false);
-        this.fadeIn.onComplete.add(this.switchState, this);
+        // to fade in after
+        game.camera.onFadeComplete.add(this.switchState, this);
     },
 
 
@@ -101,13 +96,13 @@ game_state.intro.prototype = {
     8 8888      88  8 888888888P'   8 8888          88  .8`8. `88888.     8 8888        8 8888
     8 8888      88  8 8888          8 8888         ,88 .8' `8. `88888.    8 8888        8 8888
     ` 8888     ,8P  8 8888          8 8888        ,88'.8'   `8. `88888.   8 8888        8 8888
-      8888   ,d8P   8 8888          8 8888    ,o88P' .888888888. `88888.  8 8888        8 8888
+      8888   ,d8P   8 8888          8 8888     ,o8P' .888888888. `88888.  8 8888        8 8888
        `Y88888P'    8 8888          8 888888888P'   .8'       `8. `88888. 8 8888        8 888888888888
 */
 
     update: function() {
         if (this.spacebar.isDown) {
-            this.fadeIn.start();
+            game.camera.fade(0x000000, 1000);
         }
     },
 
@@ -119,7 +114,7 @@ game_state.intro.prototype = {
 
 
     switchState: function() {
-        console.log("switching to level 1 state");
+        console.log("switching state to level 1");
         game.state.start("level1");
     }
 };

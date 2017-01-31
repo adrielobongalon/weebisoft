@@ -8,40 +8,41 @@
 http://gaa.o-oku.jp/
 ウィビソフト
 
-                                                                                                                      ,
-                                                                                                                ,  ,g8^`8,
-                                                                                                             ,g8^`8,    `88,
-                ,oooooooooo,                                                          ,oooooooooo,         `88,    `88,   `88,
-                888      888                                         ,,,              888      888           `88,    `88,  ,88,
- ,oooooooooooooo888      888oooooooooooooo,                         ,d8^`8go,         888      888             `88,   ,8Ygo""
-888                                     888                        o8P"    `Ybo,      888      888         ,,,,oo88bo88b,
-888       oooooooooooooooooooooooo      888                     ,o88"       ,88"      888      8888P^^"""""           `88b,
-888      888                   888      888                 ,,88P^"       ,o8"        888                     ,,,,,,oo8888,
-888      888                   88"      888            ,,o88P^"        ,odP"          888      8888P^^^^^^""""
-888      888                 ,88"       88"       ,,o88P^"           o88"             888      888
-"88oooooo88"               ,d8P"       d8P  ,,d8P^""          ,      888              888      888
-                       ,,o8P"        ,d8P    `Y8,        ,,o888      888              888      888
-                ,,,od8P^"          ,d8P"        `Yo,,gdP^^""888      888              888      Y88 
-      `8888888^^""             ,,d8^"             `""       888      888              Y88      `^Y8booooooooooooooooooooooo
-        88                ,,o88P^"                          888      888               `8o,                            d8P"
-        `Y8g,,,,,,,,,,,gd88P^"                              "88oooooo88"                 `^Y8888888888888888888888888888P"
+                                                                                                                   ,
+                                                                                                             ,  ,g8^`8,
+                                                                                                          ,g8^`8,    `8b,
+                ,oooooooooo,                                                       ,oooooooooo,         `Y8,    `Yb,   `8b,
+                888      888                                         ,,,           888      888           `Yb,    `Yb,  ,88,
+ ,oooooooooooooo888      888oooooooooooooo,                         ,d8^`8go,      888      888             `Yb,   ,8Ygo""
+888                                     888                        o8P"    `Ybo,   888      888         ,,,,oo88bo88b,
+888      ,oooooooooooooooooooooooo      888                     ,o88"       ,88"   888      8888P^^"""""          `88b,
+888      888                   888      888                 ,,88P^"       ,o8"     888                     ,,,,,,oo8888,
+888      888                   88"      888            ,,o88P^"        ,odP"       888      8888P^^^^^^""""
+888      888                 ,88"       88"       ,,o88P^"           o88"          888      888
+"88oooooo88"               ,d8P"       d8P  ,,d8P^""          ,      888           888      888
+                       ,,o8P"        ,d8P    `Y8,        ,,o888      888           888      888
+                ,,,od8P^"          ,d8P"        `Yo,,gdP^^""888      888           888      Y88 
+      `8888888^^""             ,,d8^"             `""       888      888           Y88      `^Y8booooooooooooooooooooooo
+        88                ,,o88P^"                          888      888            `8o,                            d8P"
+        `Y8g,,,,,,,,,,,gd88P^"                              "88oooooo88"              `^Y8888888888888888888888888888P"
 
-   ,,,,,,,,,                  ,oooooooooo,   |                                            |   888"""""""88
-88"""    "88,,                88       888   |  888""""""""""""""""""""""""""""""""""888  |     88       88
- 88       ""8,,               88       888   |  88                                   88   |      88       88
-  8,,       ""8,,            ,88       88P   |   """""""""""""""""""""""""88        888   |       88       88,,,,,,
-  "88,       "88,           ,88       ,88"   |                            ,88       88"   |        88           """"""88,,,,,,
-    88,       "8,,         88"        ,8"    |                          ,88"        88    |         888                 """""88,,,,,
-     "88,   ,,,,,88"     ,,8""       ,88"    |                         ,88"       ,88"    |          888       88"88,,,,,,       """"""8,,,,
-      """"""""""       ,8"""        ,88"     |                        ,,8""       ,88"    |           88       88    """""88,,,,,      ,,88"
-                ,,,,88"""         ,,88"      |                   ,,,,88"""       ,8""     |            888      88          """"88,,,,,,,,8"""
-       ,,,,,,,88"""""          ,,88""        |            ,,,,,,,,88"""""      ,,88""     |             88       88
+        ,,,                    ,oooooooooo,  |                                            |   888"""""""88
+    ,o8""`8b,                  888      888  |  888""""""""""""""""""""""""""""""""""888  |     88       88
+ `88       `8b,               88        888  |  88                                   88   |      88       88
+   `88,       `8,,           ,88       ,88P  |   """""""""""""""""""""""""88        888   |       88       88,,,,,,
+     `88,       `88,        ,88"      ,88"   |                            ,88       88"   |        88           """"""88,,,,,,
+       `88,      `8,,      ,88"      ,88"    |                          ,88"        88    |         888                 """""88,,,,,
+        `88,,,88"        ,,8""      ,88"     |                         ,88"       ,88"    |          888       88"88,,,,,,       """"""8,,,,
+           ""          ,8"""       ,88"      |                        ,,8""       ,88"    |           88       88    """""88,,,,,      ,,88"
+                ,,,,88"""         ,88"       |                   ,,,,88"""       ,8""     |            888      88          """"88,,,,,,,,8"""
+       ,,,,,,,88"""""          ,88""         |            ,,,,,,,,88"""""      ,,88""     |             88       88
   88""""""""""            ,,,88"""           |     ,88"""""""""""          ,,,,8""        |              8       88
   88,              ,,,,,88"""""              |    88,           ,,,,,,,88""""""           |               88       88
    "8,,,,,,,,8888""""""""                    |      88,,,,,888888"""""""""                |                88,,,,,88
+	`Y8g,,,,,,,gd88P^"
 */
 
-/* global Phaser game game_state */                                             // tells the IDE that Phaser exists in another file
+/* global Phaser game game_state yuu */                                      // tells the IDE that Phaser exists in another file
 
 
 
@@ -58,12 +59,11 @@ game_state.level1.prototype = {
     8 888888888P'   8 888888888P'    8 8888          8 8888       88 8888         88   .8`8. `88888.     8 8888          88
     8 8888          8 8888`8b        8 8888          8 8888       88 8888        ,8P  .8' `8. `88888.    8 8888         ,88
     8 8888          8 8888 `8b.      8 8888          8 8888       `8 8888       ,8P  .8'   `8. `88888.   8 8888        ,88'
-    8 8888          8 8888   `8b.    8 8888          8 8888        ` 8888     ,88'  .888888888. `88888.  8 8888    ,o88P'
+    8 8888          8 8888   `8b.    8 8888          8 8888        ` 8888     ,88'  .888888888. `88888.  8 8888     ,o8P'
     8 8888          8 8888     `88.  8 888888888888  8 888888888888   `8888888P'   .8'       `8. `88888. 8 888888888P'
 */
 
 	preload: function() {
-        game.load.image("black", "assets/blackBG.png");
         game.load.image("sky", "assets/sky.png");
         game.load.image("ground", "assets/platform.png");
         game.load.spritesheet("audrey", "assets/audrey_pixel_sprite.png", 136, 224);
@@ -103,32 +103,18 @@ game_state.level1.prototype = {
 
 
 
-        // add audrey sprite
-        this.player = game.add.sprite(10, game.world.height - 64 - 224, "audrey");
-        this.player.scale.setTo(1, 1);                                          // resize player
-        this.player.alpha = 0;
+        // add yuu sprite
+        yuu.phaserData = game.add.sprite(10, 10, "audrey");
+        yuu.spawn(1, 1, yuu.width, yuu.height, 32, 0);
 
-        this.player.animationDirX = 0;                                          // manages direction of audrey
-        this.player.LR = "front";                                               // start off facing forwards
-        this.player.animationCounter = 0;                                       // resets counter that makes her face forwards after waiting for some time
+        yuu.phaserData.alpha = 0;
 
-        // enable physics on the player
-        game.physics.arcade.enable(this.player);                                // enable physics
-        this.player.body.setSize(72, 224, 32, 0);                               // hitbox size management
-        this.player.body.gravity.y = 0;                                         // start off in position (no gravity)
-        this.player.body.bounce.y = 0.3;                                        // bounce
-        this.player.canMoov = false;                                            // cannot move until spawned
-        game.physics.arcade.setBounds(0, 0, game.world.width, game.world.height);
-        this.player.body.collideWorldBounds = true;                             // makes sure you can't fall off the map
+        // yuu animation
+        yuu.phaserData.frame = 3;                                               // start facing forwards
 
-        // player animation
-        this.player.animations.add("left", [0, 2, 1, 2], 5, true);              // order to of frames to run moving animation
-        this.player.animations.add("right", [6, 4, 5, 4], 5, true);
-        this.player.frame = 3;                                                  // start facing forwards
-
-        // fades audrey in
-        this.fadeAudreyAnimation = game.add.tween(this.player);
-        this.fadeAudreyAnimation.to({alpha: 1}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
+        // fades yuu in
+        yuu.phaserData.fadeYuuAnimation = game.add.tween(yuu.phaserData);
+        yuu.phaserData.fadeYuuAnimation.to({alpha: 1}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
 
 
 
@@ -164,20 +150,15 @@ game_state.level1.prototype = {
 
 
 
-        // black box, for fading in
-        this.black = game.add.sprite(0, 0, "black");
-        this.black.alpha = 1;
-        this.fadeInAnimation = game.add.tween(this.black);
-        this.fadeInAnimation.to({alpha: 0}, 500, Phaser.Easing.Linear.None, true, 0, 0, false);
-        this.fadeInAnimation.onComplete.add(this.fadeAudrey, this);
-        this.fadeOutAnimation = game.add.tween(this.black);
-        this.fadeOutAnimation.onComplete.add(this.switchState, this);
-        this.fadeOutAnimation.to({alpha: 1}, 1000, Phaser.Easing.Linear.None, false, 1750, 0, false);
+        // for fading in and fading out
+        game.camera.onFlashComplete.add(this.fadeYuu, this);
+        game.camera.onFadeComplete.add(this.switchState, this);
 
 
 
 
-        // to make sure the switchState function is called only once
+        // to make sure that the fade in runs only once, and that switchState function is called only once
+        this.started = false;
         this.switching = false;
     },
 
@@ -197,17 +178,31 @@ game_state.level1.prototype = {
     8 8888      88  8 888888888P'   8 8888          88  .8`8. `88888.     8 8888        8 8888
     8 8888      88  8 8888          8 8888         ,88 .8' `8. `88888.    8 8888        8 8888
     ` 8888     ,8P  8 8888          8 8888        ,88'.8'   `8. `88888.   8 8888        8 8888
-      8888   ,d8P   8 8888          8 8888    ,o88P' .888888888. `88888.  8 8888        8 8888
+      8888   ,d8P   8 8888          8 8888     ,o8P' .888888888. `88888.  8 8888        8 8888
        `Y88888P'    8 8888          8 888888888P'   .8'       `8. `88888. 8 8888        8 888888888888
 */
 
     update: function() {
-        game.debug.body(this.player);                                           // to view hitbox
+        // game.debug.body(yuu.phaserData);                                        // view yuu's hitbox
+
+
+
+
+        if (!this.started) {
+            this.started = true;
+            game.camera.flash(0x000000, 1000);
+        }
+
+
+
+
+
+
+
 
         // collision detection
-        game.physics.arcade.collide(this.player, this.platforms);                               // player on platforms
-        game.physics.arcade.collide(this.stars, this.platforms);                                // stars on platforms
-        // game.physics.arcade.overlap(this.player, this.stars, this.collectStars, null, this);    // player on stars
+        game.physics.arcade.collide(yuu.phaserData, this.platforms);                                // yuu on platforms
+        // game.physics.arcade.overlap(yuu.phaserData, this.stars, this.collectStars, null, this);    // player on stars
 
 
 
@@ -217,61 +212,62 @@ game_state.level1.prototype = {
 
 
         // reset player velocity & direction
-        this.player.body.velocity.x = 0;
-        this.player.animationDirX = 0;
-        this.player.walkSpeed = 175;
-        this.player.walkFrameRate = 5;                                          // 5 frames per second
+        yuu.phaserData.body.velocity.x = 0;
+        yuu.animationDirX = 0;
         
         // keypress detecton
-        if (this.player.canMoov && this.arrowKeys.left.isDown) {
-            this.player.animationDirX--;
+        if (yuu.canMoov && this.arrowKeys.left.isDown) {
+            yuu.animationDirX--;
         }
-        if (this.player.canMoov && this.arrowKeys.right.isDown) {
-            this.player.animationDirX++;
+        if (yuu.canMoov && this.arrowKeys.right.isDown) {
+            yuu.animationDirX++;
         }
-        if (this.player.animationDirX < 0) {
-            this.player.body.velocity.x = -1 * this.player.walkSpeed;
-            this.player.animations.play("left", this.player.walkFrameRate, true);
-            this.player.LR = "left";
-            this.player.animationCounter = 0;
+        if (yuu.animationDirX < 0) {
+            yuu.phaserData.body.velocity.x = -1 * yuu.walkSpeed;
+            yuu.phaserData.animations.play("left", yuu.walkFrameRate, true);
+            yuu.LR = "left";
+            yuu.animationCounter = 0;
         }
-        if (this.player.animationDirX > 0) {
-            this.player.body.velocity.x = this.player.walkSpeed;
-            this.player.animations.play("right", this.player.walkFrameRate, true);
-            this.player.LR = "right";
-            this.player.animationCounter = 0;
+        if (yuu.animationDirX > 0) {
+            yuu.phaserData.body.velocity.x = yuu.walkSpeed;
+            yuu.phaserData.animations.play("right", yuu.walkFrameRate, true);
+            yuu.LR = "right";
+            yuu.animationCounter = 0;
         }
-        if (this.player.animationDirX == 0) {
-            this.player.animations.stop();
+        if (yuu.animationDirX == 0) {
+            yuu.phaserData.animations.stop();
 
-            if (this.player.animationCounter >= 50) {
-                this.player.frame = 3;
+            if (yuu.animationCounter >= 50) {
+                yuu.phaserData.frame = 3;
             }
-            else if (this.player.LR == "left") {
-                this.player.frame = 2;
+            else if (yuu.LR == "left") {
+                yuu.phaserData.frame = 2;
             }
-            else if (this.player.LR == "right") {
-                this.player.frame = 4;
+            else if (yuu.LR == "right") {
+                yuu.phaserData.frame = 4;
             }
         }
 
-        this.player.animationCounter++;
+        yuu.animationCounter++;
 
 
 
 
         // jumping
-        if (this.player.canMoov && this.arrowKeys.up.isDown && this.player.body.touching.down) {
-            this.player.body.velocity.y = -500;
+        if (yuu.canMoov && this.arrowKeys.up.isDown && yuu.phaserData.body.touching.down) {
+            yuu.phaserData.body.velocity.y = -500;
+        }
+        if (this.arrowKeys.down.isDown) {
+                this.score = 42;
         }
 
 
 
 
-        // enable movement once audrey touches the ground after fading in
-        if (!this.player.canMoov && this.player.body.touching.down) {
-            this.player.canMoov = true;
-            console.log("audrey movement enabled");
+        // enable movement once yuu touches the ground after fading in
+        if (!yuu.canMoov && yuu.phaserData.body.touching.down) {
+            yuu.canMoov = true;
+            console.log("yuu movement enabled");
         }
 
 
@@ -282,11 +278,11 @@ game_state.level1.prototype = {
 
 
         // win detection
-        // if (this.score >= this.stars.length && !this.switching) {
         if (this.score >= 1 && !this.switching) {
             this.switching = true;
             console.log("all stars collected");
-            this.fadeOutAnimation.start();
+            console.log("switching to end state");
+            game.camera.fade(0x000000, 1000);
         }
     },
 
@@ -297,10 +293,10 @@ game_state.level1.prototype = {
 
 
 
-    fadeAudrey: function() {
-        this.fadeAudreyAnimation.start();                                       // fade in
-        this.player.body.gravity.y = 2100;                                      // enable gravity
-        console.log("audrey spawned");
+    fadeYuu: function() {
+        yuu.phaserData.fadeYuuAnimation.start();                                // fade in
+        yuu.phaserData.body.gravity.y = 2100;                                   // enable gravity
+        console.log("yuu spawned");
     },
 
 
@@ -317,3 +313,11 @@ game_state.level1.prototype = {
 };
 
 game.state.add("level1", game_state.level1);
+
+
+/*
+
+notes:
+-use "deadzone" property of camera
+
+*/
