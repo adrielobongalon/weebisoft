@@ -71,7 +71,7 @@ game_state.ending.prototype = {
         this.text1 = game.add.text(10, 10,
             "outro",
             {
-                font: "20px Poppins",
+                font: "20px Finger Paint",
                 fill: "#ffffff"
             }
         );

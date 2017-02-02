@@ -40,7 +40,7 @@ game_state.intro.prototype = {
 */
 
 	preload: function() {
-        game.load.image("sky", "assets/sky2.png");
+	    // google font loader (may not work on all browsers, make sure to add hidden tag before phaser html element)
         game.load.script("webfont", "//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js");
 	},
 
@@ -65,19 +65,25 @@ game_state.intro.prototype = {
 */
 
     create: function() {
-        game.add.sprite(0, 0, "sky");                                           // add sky background
+        game.stage.backgroundColor = "#000000";                                 // plain black background
         this.spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);   // adds event listener on spacebar
+        this.aKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
 
         this.text1 = game.add.text(10, 10,
-            "intro",
+            "(intro here)\n\nウィビソフト presents\ncan you hear me",
             {
-                font: "20px Poppins",
-                fill: "#ffffff"
+                font: "20px Finger Paint",
+                fontWeight: 100,
+                fill: "#ffffff",
+                align: "center",        // text alignment
+                boundsAlignH: "center", // horizontal align for *bounding box*
+                boundsAlignV: "middle"  // vertical
             }
         );
+        this.text1.setTextBounds(0, 0, game.world.width, game.world.height);
 
         // to fade in after
-        game.camera.onFadeComplete.add(this.switchState, this);
+        game.camera.onFadeComplete.add(this.devSwitch, this);
     },
 
 
@@ -104,6 +110,9 @@ game_state.intro.prototype = {
         if (this.spacebar.isDown) {
             game.camera.fade(0x000000, 1000);
         }
+        if (this.aKey.isDown) {
+            this.switchState();
+        }
     },
 
 
@@ -116,6 +125,10 @@ game_state.intro.prototype = {
     switchState: function() {
         console.log("switching state to level 1");
         game.state.start("level1");
+    },
+    devSwitch: function() {
+        console.log("switching state to level 2");
+        game.state.start("level2");
     }
 };
 

@@ -45,13 +45,22 @@ var i = 0;
 
 var yuu = {
     // general data
-    width: 72,
+    width: 952 / 7,
     height: 224,
+    hbWidth: 72,
+    hbHeight: 224,      // same as this.height (cannot be set to "this.height" because of how objects are constructed)
+    hbOffsetX: 32,
+    hbOffsetY: 0,
+    scaleX: 1,
+    scaleY: 1,
+    
 
     // physics data
     gravity: 0,
     bounce: 0.3,
     canMoov: false,
+    canRun: true,       // TODO     REMOVE RUN UNTIL DOWNSTAIRS
+    running: false,
 
     // animation data
     alpha: 0,
@@ -60,28 +69,116 @@ var yuu = {
     animationCounter: 0,                                                        // resets counter that makes her face forwards after waiting for some time
     walkSpeed: 175,
     walkFrameRate: 5,                                                           // 5 frames per second
-    runSpeed: 400,
+    runSpeed: 500,
+    runFrameRate: 5,
 
     // for saving stuff
     phaserData: null,                                                           // ONLY PHASER SHOULD MODIFY THIS! DO NOT TOUCH!
-    // phaserStuff: null,
 
 
 
 
     // add yuu sprite
-    spawn: function(xScale, yScale, hbWidth, hbHeight, hbOffsetX, hbOffsetY) {
-        game.physics.arcade.enable(this.phaserData);                            // enable physics
-        this.phaserData.scale.setTo(xScale, yScale);                            // resize sprite
-        this.phaserData.body.setSize(hbWidth, hbHeight, hbOffsetX, hbOffsetY);  // hitbox size management
+    spawn: function(scaleX, scaleY) {
+        // enable physics
+        game.physics.arcade.enable(this.phaserData);
+
+        this.scaleX = scaleX;
+        this.scaleY = scaleY;
+        
+        // resize yuu
+        this.phaserData.scale.setTo(this.scaleX, this.scaleY);
+
+        // hitbox size management
+        this.phaserData.body.setSize(this.hbWidth, this.hbHeight, this.hbOffsetX, this.hbOffsetY);
+        /* phaser automatically takes care of scaling this; DO NOT MULTIPLY BY scaleX OR scaleY */
 
         // yuu cannot go out of bounds
         game.physics.arcade.setBounds(0, 0, game.world.width, game.world.height);
         this.phaserData.body.collideWorldBounds = true;
 
-        this.phaserData.animations.add("left", [0, 2, 1, 2], 5, true);          // order to of frames to run moving animation
+        // order to of frames to run moving animation
+        this.phaserData.animations.add("left", [0, 2, 1, 2], 5, true);
         this.phaserData.animations.add("right", [6, 4, 5, 4], 5, true);
+    },
+    grow: function(value) {
+        if (this.hbHeight < 500) {
+            yuu.phaserData.y -= value;
+            this.hbHeight += value;
+            this.phaserData.body.setSize(this.hbWidth, this.hbHeight, this.hbOffsetX, this.hbOffsetY);
+        }
+    },
+    shrink: function(value) {
+        if (this.hbHeight > this.height) {
+            this.hbHeight -= value;
+            this.phaserData.body.setSize(this.hbWidth, this.hbHeight, this.hbOffsetX, this.hbOffsetY);
+        }
     }
 };
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var textbox = {
+    // for saving stuff
+    phaserData: null,                                                           // ONLY PHASER SHOULD MODIFY THIS! DO NOT TOUCH!
+
+    // fading stuff
+    fadeInAnimation: null,
+    fadeOutAnimation: null,
+
+    loadData: function(delayFadeIn) {                                           // also sets alpha to 0 for fading in
+        this.phaserData.alpha = 0;
+        this.fadeInAnimation = game.add.tween(this.phaserData).to({alpha: 1}, 250, Phaser.Easing.Linear.None, false, delayFadeIn, 0, false);
+        this.fadeOutAnimation = game.add.tween(this.phaserData).to({alpha: 0}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
+    },
+
+    fadeIn: function() {
+        this.fadeInAnimation.start();
+    },
+    fadeOut: function() {
+        this.fadeOutAnimation.start();
+    },
+
+
+
+
+    text: [],
+    options: {},
+
+
+
+
+    speak: function() {
+        
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var groundSpriteDimensions = {width: 400, height: 32};

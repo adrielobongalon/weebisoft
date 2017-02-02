@@ -1,8 +1,7 @@
 /*
-       document : level1.js, for weebisoft
-     created on : monday, october 31, 2016, 10:42 am
-      cloned on : tuesday, january 24, 2017, 12:06 pm
-         author : adrielo (audrey) bongalon
+       document : level2.js, for weebisoft
+     created on : tursday, february 2, 2017, 10:05 am
+         author : adrielo (audrey) bongalon, angelina
     description : js file for my game, for 11th grade video game programming expeditions course
 
 ウィビソフト
@@ -41,13 +40,13 @@
 	`Y8g,,,,,,,gd88P^"
 */
 
-/* global Phaser game game_state yuu groundSpriteDimensions */
+/* global Phaser game game_state yuu groundSpriteDimensions textbox */
 
-var debugRect = new Phaser.Rectangle(150, 445, 725, 110);
+// var debugRect = new Phaser.Rectangle(150, 445, 725, 110);                    // TODO     DELETE ME
 
 
-game_state.level1 = function() {};
-game_state.level1.prototype = {
+game_state.level2 = function() {};
+game_state.level2.prototype = {
 
 /*
     8 888888888o    8 888888888o.    8 888888888888  8 8888           ,o888888o.            .8.          8 888888888o.
@@ -63,13 +62,11 @@ game_state.level1.prototype = {
 */
 
 	preload: function() {
-        game.load.image("grid", "assets/debug-grid-1920x1920.png");
+        game.load.image("grid", "assets/debug-grid-1920x1920.png");             // TODO stairs on left in background
         game.load.image("ground", "assets/platform.png");
         game.load.spritesheet("audrey", "assets/audrey_pixel_sprite.png", 136, 224);
-        game.load.image("back wall", "assets/backWall.png");
-        game.load.image("front wall", "assets/frontWall.png");
-        game.load.image("door closed", "assets/doorClose.png");
-        game.load.image("door open", "assets/doorOpen.jpg");
+        game.load.image("textbox", "assets/textbox.jpg");
+        game.load.script("webfont", "//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js");
 	},
 
 
@@ -114,20 +111,7 @@ game_state.level1.prototype = {
         this.groundHeight = 48;
         this.ground = this.platforms.create(0, game.world.height - this.groundHeight, "ground");
         this.ground.scale.setTo(game.world.width / groundSpriteDimensions.width, this.groundHeight / groundSpriteDimensions.height);      // resize to stretch across canvas
-        this.ground.body.immovable = true;                                                  // make ground immoveable
-
-
-
-
-
-
-
-
-        // add back wall and open door (yuu will cover this)
-        this.shiftWallDoor = 38;                                               // TODO     DELETE ME ONCE ACTUAL SPRITES ARE LOADED
-        this.backWall = game.add.sprite(1024 - 81 - 66, this.shiftWallDoor, "back wall");
-        this.openDoor = game.add.sprite(1024 - 81 - 88, 242 + this.shiftWallDoor, "door open");
-        this.openDoor.alpha = 0;
+        this.ground.body.immovable = true;                                      // make ground immoveable
 
 
 
@@ -140,9 +124,8 @@ game_state.level1.prototype = {
         yuu.phaserData = game.add.sprite(10, game.world.height - this.groundHeight - yuu.height, "audrey");
         yuu.spawn(1, 1);
 
+        yuu.canMoov = false;
         yuu.phaserData.alpha = 0;
-
-        // yuu animation
         yuu.phaserData.frame = 3;                                               // start facing forwards
 
         // fades yuu in
@@ -156,10 +139,33 @@ game_state.level1.prototype = {
 
 
 
-        // add front wall (this will cover yuu)
-        this.closedDoor = game.add.sprite(1024 - 81, 576 - 409 + this.shiftWallDoor, "door closed");
-        this.frontWall = game.add.sprite(1024 - 81, 576 - 409 + this.shiftWallDoor, "front wall");
+        // dialogue box
+        textbox.phaserData = game.add.image(150, 445, "textbox");
+        textbox.loadData(2000);
+        textbox.fadeIn();
+        textbox.text.push("Can you hear me?");
+        textbox.options = {
+            numOfReplies: 5,
 
+            // individual replies
+            1: {
+                response: "Yes.",
+                replies: ["Good. I have something important to tell you.", "What is it?", "etc"]
+            },
+            2: {
+                response: "",
+            },
+            3: {
+                
+            },
+            4: {
+                
+            },
+            5: {
+                response: "*don't answer*",
+                replies: ["I know you can..."],
+            }
+        };
 
 
 
@@ -204,7 +210,7 @@ game_state.level1.prototype = {
         // to make sure that the fade in runs only once, and that switchState function is called only once
         this.started = false;
         this.switching = false;
-        this.doorOpened = false;
+        this.dialogueComplete = false;
     },
 
 
@@ -339,17 +345,21 @@ game_state.level1.prototype = {
 
 
         // enable movement once yuu touches the ground after fading in
-        if (!yuu.canMoov && yuu.phaserData.body.touching.down) {
+        if (this.dialogueComplete) {
             yuu.canMoov = true;
             console.log("yuu movement enabled");
         }
 
+// -----------------------------------------------------------------------------
 
 
 
 
 
 
+
+
+// -----------------------------------------------------------------------------
 
         // win detection
         if (this.score >= 1 && !this.switching) {
@@ -392,11 +402,11 @@ game_state.level1.prototype = {
         game.debug.body(yuu.phaserData);                                        // view yuu's hitbox
         game.debug.cameraInfo(game.camera, 32, 32);
         game.debug.spriteInfo(yuu.phaserData, 32, 120);
-        game.debug.geom(debugRect, "rgba(255, 0, 0, 0.5)");
+        // game.debug.geom(debugRect, "rgba(255, 0, 0, 0.5)");                  // TODO     DELETE ME
     }
 };
 
-game.state.add("level1", game_state.level1);
+game.state.add("level2", game_state.level2);
 
 
 /*
