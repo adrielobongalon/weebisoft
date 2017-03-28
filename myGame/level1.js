@@ -11,11 +11,11 @@
                                                                                                              ,  ,g8^`8,
                                                                                                           ,g8^`8,    `8b,
                 ,oooooooooo,                                                       ,oooooooooo,         `Y8,    `Yb,   `8b,
-                888      888                                         ,,,           888      888           `Yb,    `Yb,  ,88,
+                888      888                                          ,,           888      888           `Yb,    `Yb,  ,88,
  ,oooooooooooooo888      888oooooooooooooo,                         ,d8^`8go,      888      888             `Yb,   ,8Ygo""
 888                                     888                        o8P"    `Ybo,   888      888         ,,,,oo88bo88b,
 888      ,oooooooooooooooooooooooo      888                     ,o88"       ,88"   888      8888P^^"""""          `88b,
-888      888                   888      888                 ,,88P^"       ,o8"     888                     ,,,,,,oo8888,
+888      888                   888      888                 ,,88P^        ,o8"     888                     ,,,,,,oo8888,
 888      888                   88"      888            ,,o88P^"        ,odP"       888      8888P^^^^^^""""
 888      888                 ,88"       88"       ,,o88P^"           o88"          888      888
 "88oooooo88"               ,d8P"       d8P  ,,d8P^""          ,      888           888      888
@@ -43,7 +43,7 @@
 
 /* global Phaser game game_state yuu groundSpriteDimensions */
 
-var debugRect = new Phaser.Rectangle(150, 445, 725, 110);
+
 
 
 game_state.level1 = function() {};
@@ -128,6 +128,7 @@ game_state.level1.prototype = {
         this.backWall = game.add.sprite(1024 - 81 - 66, this.shiftWallDoor, "back wall");
         this.openDoor = game.add.sprite(1024 - 81 - 88, 242 + this.shiftWallDoor, "door open");
         this.openDoor.alpha = 0;
+        this.fadeInDoor = game.add.tween(this.openDoor).to({alpha: 1}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
 
 
 
@@ -157,7 +158,9 @@ game_state.level1.prototype = {
 
 
         // add front wall (this will cover yuu)
-        this.closedDoor = game.add.sprite(1024 - 81, 576 - 409 + this.shiftWallDoor, "door closed");
+        this.closedDoor = game.add.sprite(1024 - 81, 576 - 329 + this.shiftWallDoor, "door closed");
+        this.closedDoor.enableBody = true;                                      // applies game physics (needed for collision)
+        this.fadeOutDoor = game.add.tween(this.closedDoor).to({alpha: 0}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
         this.frontWall = game.add.sprite(1024 - 81, 576 - 409 + this.shiftWallDoor, "front wall");
 
 
@@ -244,6 +247,7 @@ game_state.level1.prototype = {
         // collision detection
         game.physics.arcade.collide(yuu.phaserData, this.platforms);                                // yuu on platforms
         // game.physics.arcade.overlap(yuu.phaserData, this.stars, this.collectStars, null, this);    // player on stars
+        // game.physics.arcade.collide(yuu.phaserData, this.closedDoor);        // TODO fix collision between door and yuu
 
 
 
@@ -319,6 +323,8 @@ game_state.level1.prototype = {
         if (yuu.canMoov && this.arrowKeys.up.isDown && yuu.phaserData.body.touching.down) {
             yuu.phaserData.body.velocity.y = -500;
         }
+
+        // dev commands
         if (this.otherKeys.n.isDown) {
                 this.score = 42;
         }
@@ -333,15 +339,6 @@ game_state.level1.prototype = {
         }
         if (this.otherKeys.e.isDown) {
             game.camera.x += 10;
-        }
-
-
-
-
-        // enable movement once yuu touches the ground after fading in
-        if (!yuu.canMoov && yuu.phaserData.body.touching.down) {
-            yuu.canMoov = true;
-            console.log("yuu movement enabled");
         }
 
 
@@ -380,19 +377,43 @@ game_state.level1.prototype = {
 
 
 
+    openDoor: function() {
+        console.log("door");
+    },
+
+
+
+
+
+
+
+
     switchState: function() {
         console.log("switching to end state");
         game.state.start("ending");
     },
 
 
+
+
+
+
+
+
 // -----------------------------------------------------------------------------
+
+
+
+
+
+
+
 
     render: function() {
         game.debug.body(yuu.phaserData);                                        // view yuu's hitbox
         game.debug.cameraInfo(game.camera, 32, 32);
         game.debug.spriteInfo(yuu.phaserData, 32, 120);
-        game.debug.geom(debugRect, "rgba(255, 0, 0, 0.5)");
+        game.debug.bodyInfo(yuu.phaserData, 32, 220);
     }
 };
 
@@ -402,6 +423,6 @@ game.state.add("level1", game_state.level1);
 /*
 
 notes:
--use "deadzone" property of camera
+-use "deadzone" property of camera?
 
 */

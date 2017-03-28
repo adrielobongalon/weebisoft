@@ -58,7 +58,7 @@ var yuu = {
     // physics data
     gravity: 0,
     bounce: 0.3,
-    canMoov: false,
+    canMoov: true,
     canRun: true,       // TODO     REMOVE RUN UNTIL DOWNSTAIRS
     running: false,
 
@@ -131,7 +131,7 @@ var yuu = {
 
 
 
-var textbox = {
+var textbox = {                                                                 // TODO DELETE
     // for saving stuff
     phaserData: null,                                                           // ONLY PHASER SHOULD MODIFY THIS! DO NOT TOUCH!
 
@@ -165,6 +165,30 @@ var textbox = {
         
     }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function Path(text, type, options, redirect) {
+    this.text = text;           // double array of dialogue
+    this.type = type;           // either "options", "redir", or "end"
+    this.options = options;     // either [["option name 1", redirect], ["option name 2"], redirect] or null
+    this.redirect = redirect;   // either name of redirect object or null
+
+    // MAKE SURE THE REDIRECT OBJECT IS DEFINED
+}
 
 
 

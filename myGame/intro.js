@@ -70,7 +70,7 @@ game_state.intro.prototype = {
         this.aKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
 
         this.text1 = game.add.text(10, 10,
-            "(intro here)\n\nウィビソフト presents\ncan you hear me",
+            "ウィビソフト presents:\nCan You Hear Me?\n\n(Press space to begin.)",
             {
                 font: "20px Finger Paint",
                 fontWeight: 100,

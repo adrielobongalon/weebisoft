@@ -40,7 +40,7 @@
 	`Y8g,,,,,,,gd88P^"
 */
 
-/* global Phaser game game_state yuu groundSpriteDimensions textbox */
+/* global Phaser game game_state yuu groundSpriteDimensions textbox Path */
 
 // var debugRect = new Phaser.Rectangle(150, 445, 725, 110);                    // TODO     DELETE ME
 
@@ -139,33 +139,47 @@ game_state.level2.prototype = {
 
 
 
-        // dialogue box
-        textbox.phaserData = game.add.image(150, 445, "textbox");
-        textbox.loadData(2000);
-        textbox.fadeIn();
-        textbox.text.push("Can you hear me?");
-        textbox.options = {
-            numOfReplies: 5,
+        // dialogue paths
+        var path1 = new Path([["Voice", "Can you hear me?"]],                   // dialogue
+                             "options",                                         // type
+                             [["Yes.", path2],                                  // options
+                              ["Um...\nYeah?", path2],
+                              ["No.", path3],
+                              ["Leave me alone.", path4],
+                              ["*don't answer*", path5]],
+                             null);                                             // redirect
 
-            // individual replies
-            1: {
-                response: "Yes.",
-                replies: ["Good. I have something important to tell you.", "What is it?", "etc"]
-            },
-            2: {
-                response: "",
-            },
-            3: {
-                
-            },
-            4: {
-                
-            },
-            5: {
-                response: "*don't answer*",
-                replies: ["I know you can..."],
-            }
-        };
+
+        var path2 = new Path([["Voice", "Good, I have something important to tell you."],       // dialogue
+                              ["Yuu", "What is it?"],
+                              ["Voice", "You need to go. Arm yourself quickly."]],
+                             "end", null, null);                                                // type, options, and redirect
+
+
+        var path3 = new Path([["Voice", "You’re a terrible liar.\nOne could only respond after being prompted with a question."],   // dialogue
+                              ["Voice", "Surely you didn’t think I’d believe you."],
+                              ["Yuu", "Leave me alone."]],
+                             "redir", null, path4);                                                                                 // type, options, redirect
+
+
+        var path4 = new Path([["Voice","No need to be so rude. I'm here to help you"],          // dialogue
+                              ["Yuu", "Help me?"],
+                              ["Voice", "Yes. And you need to find a weapon. Now."]],
+                             "end", null, null);                                                // type, options, redirect
+
+
+        var path5 = new Path([["Voice", "I know you can hear me."]],            // dialogue
+                             "options",                                         // type
+                             [["Fine. I can.", path2],                          // options
+                              ["*remain silent*", path6]],
+                             null);
+
+
+        var path6 = new Path([["Voice", "You’re wasting time, stop being so childish."]],       // dialogue
+                             "redir", null, path4);                                             // type, options, redirect
+        //the brackets and Voice/Yuu markers may be incorrect starting from line 154
+        // don't worry. i fixed it. -audrey
+
 
 
 
@@ -261,7 +275,6 @@ game_state.level2.prototype = {
         // detect running (before actually moving yuu, so that she moves the correct amount on the correct frame)
         if (this.otherKeys.shift.isDown) {
             yuu.running = true;
-            // console.log("shifty shift");
         }
         else {
             yuu.running = false;
