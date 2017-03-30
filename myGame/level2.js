@@ -66,7 +66,6 @@ game_state.level2.prototype = {
         game.load.image("ground", "assets/platform.png");
         game.load.spritesheet("audrey", "assets/audrey_pixel_sprite.png", 136, 224);
         game.load.image("textbox", "assets/textbox.jpg");
-        game.load.script("webfont", "//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js");
 	},
 
 
@@ -131,54 +130,6 @@ game_state.level2.prototype = {
         // fades yuu in
         yuu.phaserData.fadeYuuAnimation = game.add.tween(yuu.phaserData);
         yuu.phaserData.fadeYuuAnimation.to({alpha: 1}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
-
-
-
-
-
-
-
-
-        // dialogue paths
-        var path1 = new Path([["Voice", "Can you hear me?"]],                   // dialogue
-                             "options",                                         // type
-                             [["Yes.", path2],                                  // options
-                              ["Um...\nYeah?", path2],
-                              ["No.", path3],
-                              ["Leave me alone.", path4],
-                              ["*don't answer*", path5]],
-                             null);                                             // redirect
-
-
-        var path2 = new Path([["Voice", "Good, I have something important to tell you."],       // dialogue
-                              ["Yuu", "What is it?"],
-                              ["Voice", "You need to go. Arm yourself quickly."]],
-                             "end", null, null);                                                // type, options, and redirect
-
-
-        var path3 = new Path([["Voice", "You’re a terrible liar.\nOne could only respond after being prompted with a question."],   // dialogue
-                              ["Voice", "Surely you didn’t think I’d believe you."],
-                              ["Yuu", "Leave me alone."]],
-                             "redir", null, path4);                                                                                 // type, options, redirect
-
-
-        var path4 = new Path([["Voice","No need to be so rude. I'm here to help you"],          // dialogue
-                              ["Yuu", "Help me?"],
-                              ["Voice", "Yes. And you need to find a weapon. Now."]],
-                             "end", null, null);                                                // type, options, redirect
-
-
-        var path5 = new Path([["Voice", "I know you can hear me."]],            // dialogue
-                             "options",                                         // type
-                             [["Fine. I can.", path2],                          // options
-                              ["*remain silent*", path6]],
-                             null);
-
-
-        var path6 = new Path([["Voice", "You’re wasting time, stop being so childish."]],       // dialogue
-                             "redir", null, path4);                                             // type, options, redirect
-        //the brackets and Voice/Yuu markers may be incorrect starting from line 154
-        // don't worry. i fixed it. -audrey
 
 
 

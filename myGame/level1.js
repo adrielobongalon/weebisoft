@@ -41,7 +41,7 @@
 	`Y8g,,,,,,,gd88P^"
 */
 
-/* global Phaser game game_state yuu groundSpriteDimensions */
+/* global Phaser game game_state yuu textbox Path groundSpriteDimensions */
 
 
 
@@ -70,6 +70,7 @@ game_state.level1.prototype = {
         game.load.image("front wall", "assets/frontWall.png");
         game.load.image("door closed", "assets/doorClose.png");
         game.load.image("door open", "assets/doorOpen.jpg");
+        game.load.image("textbox", "assets/textbox.jpg");
 	},
 
 
@@ -150,6 +151,9 @@ game_state.level1.prototype = {
         yuu.phaserData.fadeYuuAnimation = game.add.tween(yuu.phaserData);
         yuu.phaserData.fadeYuuAnimation.to({alpha: 1}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
 
+        // yuu cannot move on start (player must go through dialogue)
+        yuu.canMoov = false;
+
 
 
 
@@ -162,6 +166,63 @@ game_state.level1.prototype = {
         this.closedDoor.enableBody = true;                                      // applies game physics (needed for collision)
         this.fadeOutDoor = game.add.tween(this.closedDoor).to({alpha: 0}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
         this.frontWall = game.add.sprite(1024 - 81, 576 - 409 + this.shiftWallDoor, "front wall");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // dialogue paths (defined in order so that paths are already defined when they are referenced within the objects)
+        this.path2 = new Path([["Voice", "Good, I have something important to tell you."],      // dialogue
+                              ["Yuu", "What is it?"],
+                              ["Voice", "You need to go. Arm yourself quickly."]],
+                             "end", null, null);                                                // type, options, and redirect
+
+
+        this.path4 = new Path([["Voice","No need to be so rude. I'm here to help you"],         // dialogue
+                              ["Yuu", "Help me?"],
+                              ["Voice", "Yes. And you need to find a weapon. Now."]],
+                             "end", null, null);                                                // type, options, redirect
+
+
+        this.path3 = new Path([["Voice", "You’re a terrible liar.\nOne could only respond after being prompted with a question."],  // dialogue
+                              ["Voice", "Surely you didn’t think I’d believe you."],
+                              ["Yuu", "Leave me alone."]],
+                             "redirect", null, this.path2);                                                                            // type, options, redirect
+
+
+        this.path6 = new Path([["Voice", "You’re wasting time, stop being so childish."]],      // dialogue
+                             "redirect", null, this.path2);                                        // type, options, redirect
+
+
+        this.path5 = new Path([["Voice", "I know you can hear me."]],           // dialogue
+                             "options",                                         // type
+                             [["Fine. I can.", this.path2],                     // options
+                              ["*remain silent*", this.path6]],
+                             null);
+
+    
+        this.path1 = new Path([["Voice", "Can you hear me?"]],                  // dialogue
+                             "options",                                         // type
+                             [["Yes.", this.path2],                             // options
+                              ["Um...\nYeah?", this.path2],
+                              ["No.", this.path3],
+                              ["Leave me alone.", this.path4],
+                              ["*don't answer*", this.path5]],
+                             null);                                             // redirect
+
+
+        textbox.loadData();
 
 
 
@@ -208,6 +269,8 @@ game_state.level1.prototype = {
         this.started = false;
         this.switching = false;
         this.doorOpened = false;
+
+        this.score = 0;                                                         // TODO delete me
     },
 
 
@@ -231,10 +294,12 @@ game_state.level1.prototype = {
 */
 
     update: function() {
-        // fade in
+
         if (!this.started) {
             this.started = true;
-            game.camera.flash(0x000000, 1000);
+            game.camera.flash(0x000000, 1000);                                  // fade in
+
+            textbox.speak(this.path2, function() {console.log("callback")});
         }
 
 

@@ -131,40 +131,113 @@ var yuu = {
 
 
 
-var textbox = {                                                                 // TODO DELETE
+var textbox = {
+
+    // dimensions
+    width: 724,         // match to sprite dimensions
+    height: 110,
+    xOffset: null,      // since this is an object literal, this.width is not defined yet
+    yOffset: null,      // it needs to be defined after this object is created
+    textXoffset: null,  // ditto
+    textYoffset: null,  // ditto
+    textMarginX: 15,
+    textMarginY: 10,
+    nameStyle: {
+        font: "20px Finger Paint",
+        fontWeight: 100,
+        fill: "#ffffff",
+        stroke: "#000000",
+        strokeThickness: 5
+    },
+    textStyle: {
+        font: "16px Finger Paint",
+        fontWeight: 100,
+        fill: "#000000"
+    },
+
     // for saving stuff
-    phaserData: null,                                                           // ONLY PHASER SHOULD MODIFY THIS! DO NOT TOUCH!
+    phaserBox: null,                                                            // ONLY PHASER SHOULD MODIFY THIS! DO NOT TOUCH!
+    phaserName: null,                                                           // DITTO
+    phaserText: null,                                                           // DITTO AGAIN
+    phaserGoup: null,                                                           // LIKEWISE
 
     // fading stuff
-    fadeInAnimation: null,
-    fadeOutAnimation: null,
+    fadeInBox: null,
+    fadeOutBox: null,
+    fadeInText: null,
+    fadeOutText: null,
 
-    loadData: function(delayFadeIn) {                                           // also sets alpha to 0 for fading in
-        this.phaserData.alpha = 0;
-        this.fadeInAnimation = game.add.tween(this.phaserData).to({alpha: 1}, 250, Phaser.Easing.Linear.None, false, delayFadeIn, 0, false);
-        this.fadeOutAnimation = game.add.tween(this.phaserData).to({alpha: 0}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
+    loadData: function() {
+        this.phaserBox = game.add.sprite(this.xOffset, this.yOffset, "textbox");    // make sure textbox is already created in the create function of each level
+        this.phaserName = game.add.text(this.textXoffset, this.textYoffset, "name placeholder", this.nameStyle);
+        this.phaserText = game.add.text(this.textXoffset, this.textYoffset + 40, "dialogue\nplaceholder", this.textStyle);
+
+        this.phaserGroup = game.add.group();
+        this.phaserGroup.add(this.phaserBox);
+        this.phaserGroup.add(this.phaserName);
+        this.phaserGroup.add(this.phaserText);
+
+        this.phaserGroup.alpha = 0;
+
+        this.fadeInBox = game.add.tween(this.phaserGroup).to({alpha: 1}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);   // note that this fades the group,
+        this.fadeOutBox = game.add.tween(this.phaserGroup).to({alpha: 0}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);  // not just the box
+        this.fadeInText = game.add.tween(this.phaserText).to({alpha: 1}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
+        this.fadeOutText = game.add.tween(this.phaserText).to({alpha: 0}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
     },
 
     fadeIn: function() {
-        this.fadeInAnimation.start();
+        // text to display should already be stored when this function is called
+        this.fadeInBox.start();
     },
+
     fadeOut: function() {
-        this.fadeOutAnimation.start();
+        this.fadeOutBox.start();
     },
 
+    speak: function(path, callback) {
+        for (i = 0; i < path.text.length; i++) {
+            this.phaserName.setText(path.text[i][0]);
+            this.phaserText.setText(path.text[i][1]);
+        }
 
 
 
-    text: [],
-    options: {},
 
+        if (path.type == "redirect") {
+            
+        }
+        else if (path.type == "options") {
+            
+        }
+        else if (path.type == "end") {
+            this.fadeIn();
+            console.log("type: end");
 
+            if (callback && typeof callback === "function") {
+                callback();
+            }
+        }
+        else {
+            console.error("error: invalid path type");
+        }
+    },
 
+    resetData: function() {         // RUN THIS AT THE END OF EVERY LEVEL
+        this.phaserBox = null;
+        this.phaserName = null;
+        this.phaserText = null;
+        this.phaserGoup = null;
 
-    speak: function() {
-        
+        this.fadeInBox = null;
+        this.fadeOutBox = null;
+        this.fadeInText = null;
+        this.fadeOutText=  null;
     }
 };
+textbox.xOffset = (canvasDimensions.width - textbox.width) / 2;
+textbox.yOffset = canvasDimensions.height - textbox.height - 30;
+textbox.textXoffset = textbox.xOffset + textbox.textMarginX;
+textbox.textYoffset = textbox.yOffset + textbox.textMarginY;
 
 
 
@@ -183,7 +256,7 @@ var textbox = {                                                                 
 
 function Path(text, type, options, redirect) {
     this.text = text;           // double array of dialogue
-    this.type = type;           // either "options", "redir", or "end"
+    this.type = type;           // either "options", "redirect", or "end"
     this.options = options;     // either [["option name 1", redirect], ["option name 2"], redirect] or null
     this.redirect = redirect;   // either name of redirect object or null
 

@@ -83,7 +83,7 @@ game_state.intro.prototype = {
         this.text1.setTextBounds(0, 0, game.world.width, game.world.height);
 
         // to fade in after
-        game.camera.onFadeComplete.add(this.devSwitch, this);
+        game.camera.onFadeComplete.add(this.switchState, this);
     },
 
 
@@ -111,7 +111,7 @@ game_state.intro.prototype = {
             game.camera.fade(0x000000, 1000);
         }
         if (this.aKey.isDown) {
-            this.switchState();
+            this.devSwitch();
         }
     },
 
