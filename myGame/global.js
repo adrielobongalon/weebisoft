@@ -173,6 +173,8 @@ var textbox = {
     callback: null,
     dialogueProgress: 0,
     textCurrentlyFading: false,
+    nextButtonPressed: false,   // the "next button" is space, enter, and screen click
+    canGoToNext: true,
 
 
 
@@ -194,6 +196,32 @@ var textbox = {
         this.fadeOutBox = game.add.tween(this.phaserGroup).to({alpha: 0}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
         this.fadeInText = game.add.tween(this.phaserText).to({alpha: 1}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
         this.fadeOutText = game.add.tween(this.phaserText).to({alpha: 0}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
+    },
+
+
+
+
+    /* returns true when the "next button" is pressed
+       prevents user from spamming by holding down the keys
+       must be passed an object that contains the space key and enter key
+       meant to be used in phaser's update function */
+    checkNextKeys: function(keys) {
+        if (keys.space.isDown || keys.enter.isDown || game.input.activePointer.isDown) {
+            this.nextButtonPressed = true;
+        }
+        else {
+            this.nextButtonPressed = false;
+        }
+
+        if (!this.textCurrentlyFading) {
+            if (this.canGoToNext && this.nextButtonPressed) {
+                this.canGoToNext = false;
+                return true;
+            }
+            else if (!this.nextButtonPressed) {     // key up
+                this.canGoToNext = true;
+            }
+        }
     },
 
 
@@ -231,6 +259,8 @@ var textbox = {
 
 
         else if (this.currentPath.type == "end") {
+            // if
+
             if (this.callback && typeof callback === "function") {
                 this.callback();
             }

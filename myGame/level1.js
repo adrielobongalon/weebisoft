@@ -305,8 +305,9 @@ game_state.level1.prototype = {
         }
 
         if (textbox.dialogueRunning) {
-            textbox.speak();
-            console.log(textbox.textCurrentlyFading);
+            if (textbox.checkNextKeys(this.otherKeys)) {
+                console.log("next");
+            }
         }
 
 

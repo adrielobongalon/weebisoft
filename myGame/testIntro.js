@@ -18,7 +18,7 @@
                                                                      d8'
 */
 
-/* global Phaser game_state game */                                             // tells the IDE that Phaser exists in another file
+/* global Phaser game_state game canvasDimensions */                                             // tells the IDE that Phaser exists in another file
 
 
 
@@ -42,6 +42,7 @@ game_state.intro.prototype = {
 	preload: function() {
 	    // google font loader (may not work on all browsers, make sure to add hidden tag before phaser html element)
         game.load.script("webfont", "//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js");
+        game.load.image("logo", "assets/weebisoftLogo.png");
 	},
 
 
@@ -69,7 +70,12 @@ game_state.intro.prototype = {
         this.spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);   // adds event listener on spacebar
         this.aKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
 
-        this.text1 = game.add.text(0, 0,
+        this.logo = game.add.sprite(0, 0, "logo");
+        this.logo.scale.setTo(0.5, 0.5);
+        this.logoWidth = 335 * 0.5;     // multiply image width by scale x
+
+
+        this.text1 = game.add.text(10, canvasDimensions.height * (2 / 3),
             "ウィビソフト presents:\nCan You Hear Me?\n\n(Press space to begin.)",
             {
                 font: "20px Finger Paint",
@@ -77,7 +83,6 @@ game_state.intro.prototype = {
                 fill: "#ffffff",
                 align: "center",        // text alignment
                 boundsAlignH: "center", // horizontal align for *bounding box*
-                boundsAlignV: "middle"  // vertical
             }
         );
         this.text1.setTextBounds(0, 0, game.world.width, game.world.height);
@@ -107,6 +112,13 @@ game_state.intro.prototype = {
 */
 
     update: function() {
+        //here
+    if (this.logo.x < (canvasDimensions.width / 2) - (this.logoWidth / 2)) {
+        this.logo.x += 5;
+    }
+
+
+
         if (this.spacebar.isDown) {
             game.camera.fade(0x000000, 1000);
         }
@@ -116,7 +128,8 @@ game_state.intro.prototype = {
     },
 
 
-
+//512 is mid canvas maybe
+//if x of < 512 sprite.angle +=1 ???
 
 
 
