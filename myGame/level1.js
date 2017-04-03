@@ -306,7 +306,7 @@ game_state.level1.prototype = {
 
         if (textbox.dialogueRunning) {
             if (textbox.checkNextKeys(this.otherKeys)) {
-                console.log("next");
+                textbox.next();
             }
         }
 

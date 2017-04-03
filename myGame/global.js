@@ -227,14 +227,18 @@ var textbox = {
 
 
 
+    setText: function() {
+        this.phaserName.setText(this.currentPath.text[this.dialogueProgress][0]);
+        this.phaserText.setText(this.currentPath.text[this.dialogueProgress][1]);
+    },
+
     start: function(path, callback) {
         this.dialogueRunning = true;
         this.currentPath = path;
         this.callback = callback;
         this.dialogueProgress = 0;
 
-        this.phaserName.setText(path.text[i][0]);
-        this.phaserText.setText(path.text[i][1]);
+        this.setText();
 
         this.textCurrentlyFading = true;
         this.fadeInBox.start();
@@ -243,7 +247,7 @@ var textbox = {
 
 
 
-    speak: function() {
+    next: function() {
         if (this.currentPath.type == "redirect") {
             
         }
@@ -259,7 +263,7 @@ var textbox = {
 
 
         else if (this.currentPath.type == "end") {
-            // if
+            this.dialogueProgress++;
 
             if (this.callback && typeof callback === "function") {
                 this.callback();

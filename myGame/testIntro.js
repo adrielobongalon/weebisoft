@@ -70,12 +70,15 @@ game_state.intro.prototype = {
         this.spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);   // adds event listener on spacebar
         this.aKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
 
-        this.logo = game.add.sprite(0, 0, "logo");
-        this.logo.scale.setTo(0.5, 0.5);
         this.logoWidth = 335 * 0.5;     // multiply image width by scale x
+        this.logo = game.add.sprite(-this.logoWidth, canvasDimensions.height / 3, "logo");
+        this.logo.scale.setTo(0.5, 0.5);
+        this.logo.anchor.setTo(0.5, 0.5);
+        this.started = false;
+        this.moveLogo = game.add.tween(this.logo).to({x: canvasDimensions.width / 2, angle: 360}, 2000, Phaser.Easing.Linear.None, false, 0, 0, false);
 
 
-        this.text1 = game.add.text(10, canvasDimensions.height * (2 / 3),
+        this.text1 = game.add.text(0, canvasDimensions.height * (2 / 3),
             "ウィビソフト presents:\nCan You Hear Me?\n\n(Press space to begin.)",
             {
                 font: "20px Finger Paint",
@@ -89,6 +92,7 @@ game_state.intro.prototype = {
 
         // to fade in after
         game.camera.onFadeComplete.add(this.switchState, this);
+        
     },
 
 
@@ -112,10 +116,14 @@ game_state.intro.prototype = {
 */
 
     update: function() {
-        //here
-    if (this.logo.x < (canvasDimensions.width / 2) - (this.logoWidth / 2)) {
-        this.logo.x += 5;
-    }
+        if (!this.started) {
+            this.started = true;
+            this.moveLogo.start();
+        }
+        // if (this.logo.x < canvasDimensions.width / 2) {
+        //     this.logo.x += 5;
+        //      this.logo.angle += 2;
+        // }
 
 
 
@@ -125,6 +133,14 @@ game_state.intro.prototype = {
         if (this.aKey.isDown) {
             this.devSwitch();
         }
+    },
+
+
+
+
+    render: function() {
+        game.debug.body(this.logo);
+        game.debug.spriteInfo(this.logo, 32, 32);
     },
 
 
