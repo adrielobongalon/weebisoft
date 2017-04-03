@@ -167,6 +167,16 @@ var textbox = {
     fadeInText: null,
     fadeOutText: null,
 
+    // dialogue stuff
+    dialogueRunning: false,
+    currentPath: null,
+    callback: null,
+    dialogueProgress: 0,
+    textCurrentlyFading: false,
+
+
+
+
     loadData: function() {
         this.phaserBox = game.add.sprite(this.xOffset, this.yOffset, "textbox");    // make sure textbox is already created in the create function of each level
         this.phaserName = game.add.text(this.textXoffset, this.textYoffset, "name placeholder", this.nameStyle);
@@ -180,47 +190,62 @@ var textbox = {
         this.phaserGroup.alpha = 0;
 
         this.fadeInBox = game.add.tween(this.phaserGroup).to({alpha: 1}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);   // note that this fades the group,
-        this.fadeOutBox = game.add.tween(this.phaserGroup).to({alpha: 0}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);  // not just the box
+        this.fadeInBox.onComplete.add(function() {this.textCurrentlyFading = false;}, this);                                    // not just the box
+        this.fadeOutBox = game.add.tween(this.phaserGroup).to({alpha: 0}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
         this.fadeInText = game.add.tween(this.phaserText).to({alpha: 1}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
         this.fadeOutText = game.add.tween(this.phaserText).to({alpha: 0}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
     },
 
-    fadeIn: function() {
-        // text to display should already be stored when this function is called
+
+
+
+    start: function(path, callback) {
+        this.dialogueRunning = true;
+        this.currentPath = path;
+        this.callback = callback;
+        this.dialogueProgress = 0;
+
+        this.phaserName.setText(path.text[i][0]);
+        this.phaserText.setText(path.text[i][1]);
+
+        this.textCurrentlyFading = true;
         this.fadeInBox.start();
     },
 
-    fadeOut: function() {
-        this.fadeOutBox.start();
-    },
-
-    speak: function(path, callback) {
-        for (i = 0; i < path.text.length; i++) {
-            this.phaserName.setText(path.text[i][0]);
-            this.phaserText.setText(path.text[i][1]);
-        }
 
 
 
-
-        if (path.type == "redirect") {
+    speak: function() {
+        if (this.currentPath.type == "redirect") {
             
         }
-        else if (path.type == "options") {
+
+
+
+
+        else if (this.currentPath.type == "options") {
             
         }
-        else if (path.type == "end") {
-            this.fadeIn();
-            console.log("type: end");
 
-            if (callback && typeof callback === "function") {
-                callback();
+
+
+
+        else if (this.currentPath.type == "end") {
+            if (this.callback && typeof callback === "function") {
+                this.callback();
             }
         }
+
+
+
+
         else {
             console.error("error: invalid path type");
         }
     },
+
+
+
 
     resetData: function() {         // RUN THIS AT THE END OF EVERY LEVEL
         this.phaserBox = null;

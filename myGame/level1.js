@@ -248,7 +248,9 @@ game_state.level1.prototype = {
                                                         "a": Phaser.KeyCode.A,
                                                         "e": Phaser.KeyCode.E,
                                                         "d": Phaser.KeyCode.D,
-                                                        "shift": Phaser.Keyboard.SHIFT
+                                                        "shift": Phaser.Keyboard.SHIFT,
+                                                        "space": Phaser.Keyboard.SPACEBAR,
+                                                        "enter": Phaser.Keyboard.ENTER
                                                     });
 
 
@@ -299,7 +301,12 @@ game_state.level1.prototype = {
             this.started = true;
             game.camera.flash(0x000000, 1000);                                  // fade in
 
-            textbox.speak(this.path2, function() {console.log("callback")});
+            textbox.start(this.path2, this.otherKeys, function() {console.log("callback")});        // TODO delay by 1 second
+        }
+
+        if (textbox.dialogueRunning) {
+            textbox.speak();
+            console.log(textbox.textCurrentlyFading);
         }
 
 
