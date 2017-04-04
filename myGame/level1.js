@@ -94,6 +94,7 @@ game_state.level1.prototype = {
 */
 
     create: function() {
+        var _this = this;                                                       // hack-y way to store the context
         game.physics.startSystem(Phaser.Physics.ARCADE);                        // creates the in-game physics from the phaser library
 
         // adds sprites
@@ -198,7 +199,7 @@ game_state.level1.prototype = {
         this.path3 = new Path([["Voice", "You’re a terrible liar.\nOne could only respond after being prompted with a question."],  // dialogue
                               ["Voice", "Surely you didn’t think I’d believe you."],
                               ["Yuu", "Leave me alone."]],
-                             "redirect", null, this.path2);                                                                            // type, options, redirect
+                             "redirect", null, this.path4);                                                                            // type, options, redirect
 
 
         this.path6 = new Path([["Voice", "You’re wasting time, stop being so childish."]],      // dialogue
@@ -221,8 +222,13 @@ game_state.level1.prototype = {
                               ["*don't answer*", this.path5]],
                              null);                                             // redirect
 
-
         textbox.loadData();
+
+        yuu.phaserData.fadeYuuAnimation.onComplete.add(function() {
+            window.setTimeout(function() {
+                textbox.start(_this.path3, _this.startAfterText);
+            }, 1000);
+        }, this);
 
 
 
@@ -300,10 +306,9 @@ game_state.level1.prototype = {
         if (!this.started) {
             this.started = true;
             game.camera.flash(0x000000, 1000);                                  // fade in
-
-            textbox.start(this.path2, this.otherKeys, function() {console.log("callback")});        // TODO delay by 1 second
         }
 
+        // note: this can't all be one function because the keys are defined on the level files, and not on the global file
         if (textbox.dialogueRunning) {
             if (textbox.checkNextKeys(this.otherKeys)) {
                 textbox.next();
@@ -441,6 +446,17 @@ game_state.level1.prototype = {
         yuu.phaserData.fadeYuuAnimation.start();                                // fade in
         yuu.phaserData.body.gravity.y = 2100;                                   // enable gravity
         console.log("yuu spawned");
+    },
+
+
+
+
+
+
+
+
+    startAfterText: function() {
+        yuu.canMoov = true;
     },
 
 

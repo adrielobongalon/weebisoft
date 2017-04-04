@@ -70,16 +70,21 @@ game_state.intro.prototype = {
         this.spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);   // adds event listener on spacebar
         this.aKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
 
+        //adds the logo come in spinning
         this.logoWidth = 335 * 0.5;     // multiply image width by scale x
         this.logo = game.add.sprite(-this.logoWidth, canvasDimensions.height / 3, "logo");
         this.logo.scale.setTo(0.5, 0.5);
         this.logo.anchor.setTo(0.5, 0.5);
         this.started = false;
         this.moveLogo = game.add.tween(this.logo).to({x: canvasDimensions.width / 2, angle: 360}, 2000, Phaser.Easing.Linear.None, false, 0, 0, false);
+        this.moveLogo.onComplete.add(function() {
+            this.fadeInText1.start();
+            this.fadeInText2.start();
+        }, this);
 
-
+        //first text
         this.text1 = game.add.text(0, canvasDimensions.height * (2 / 3),
-            "ウィビソフト presents:\nCan You Hear Me?\n\n(Press space to begin.)",
+            "ウィビソフト presents:\nCan You Hear Me?\n",
             {
                 font: "20px Finger Paint",
                 fontWeight: 100,
@@ -89,10 +94,28 @@ game_state.intro.prototype = {
             }
         );
         this.text1.setTextBounds(0, 0, game.world.width, game.world.height);
+        this.text1.alpha = 0;
+
+        this.fadeInText1 =  game.add.tween(this.text1).to({alpha: 1}, 1000, Phaser.Easing.Linear.None, false, 500, 0, false);
+        
+        //second text
+        this.text2 =game.add.text(0, canvasDimensions.height * (7 / 8),
+           "(Press space to begin.)",
+            {
+                font: "20px Finger Paint",
+                fontWeight: 100,
+                fill: "#ffffff",
+                align: "center",        // text alignment
+                boundsAlignH: "center", // horizontal align for *bounding box* MUAHHAA I STOLE THE TEXT
+            }
+        );
+        this.text2.setTextBounds(0, 0, game.world.width, game.world.height);
+        this.text2.alpha = 0; 
+        this.fadeInText2 =  game.add.tween(this.text2).to({alpha: 1}, 1000, Phaser.Easing.Linear.None, false, 2000, -1, true);
 
         // to fade in after
-        game.camera.onFadeComplete.add(this.switchState, this);
-        
+       game.camera.onFadeComplete.add(this.switchState, this);
+    
     },
 
 

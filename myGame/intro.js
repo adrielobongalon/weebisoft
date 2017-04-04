@@ -18,7 +18,7 @@
                                                                      d8'
 */
 
-/* global Phaser game_state game */                                             // tells the IDE that Phaser exists in another file
+/* global Phaser game_state game canvasDimensions */                                             // tells the IDE that Phaser exists in another file
 
 
 
@@ -42,6 +42,7 @@ game_state.intro.prototype = {
 	preload: function() {
 	    // google font loader (may not work on all browsers, make sure to add hidden tag before phaser html element)
         game.load.script("webfont", "//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js");
+        game.load.image("logo", "assets/weebisoftLogo.png");
 	},
 
 
@@ -69,21 +70,52 @@ game_state.intro.prototype = {
         this.spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);   // adds event listener on spacebar
         this.aKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
 
-        this.text1 = game.add.text(0, 0,
-            "ウィビソフト presents:\nCan You Hear Me?\n\n(Press space to begin.)",
+        //adds the logo come in spinning
+        this.logoWidth = 335 * 0.5;     // multiply image width by scale x
+        this.logo = game.add.sprite(-this.logoWidth, canvasDimensions.height / 3, "logo");
+        this.logo.scale.setTo(0.5, 0.5);
+        this.logo.anchor.setTo(0.5, 0.5);
+        this.started = false;
+        this.moveLogo = game.add.tween(this.logo).to({x: canvasDimensions.width / 2, angle: 360}, 2000, Phaser.Easing.Linear.None, false, 0, 0, false);
+        this.moveLogo.onComplete.add(function() {
+            this.fadeInText1.start();
+            this.fadeInText2.start();
+        }, this);
+
+        //first text
+        this.text1 = game.add.text(0, canvasDimensions.height * (2 / 3),
+            "ウィビソフト presents:\nCan You Hear Me?\n",
             {
                 font: "20px Finger Paint",
                 fontWeight: 100,
                 fill: "#ffffff",
                 align: "center",        // text alignment
                 boundsAlignH: "center", // horizontal align for *bounding box*
-                boundsAlignV: "middle"  // vertical
             }
         );
         this.text1.setTextBounds(0, 0, game.world.width, game.world.height);
+        this.text1.alpha = 0;
+
+        this.fadeInText1 =  game.add.tween(this.text1).to({alpha: 1}, 1000, Phaser.Easing.Linear.None, false, 500, 0, false);
+        
+        //second text
+        this.text2 =game.add.text(0, canvasDimensions.height * (7 / 8),
+           "(Press space to begin.)",
+            {
+                font: "20px Finger Paint",
+                fontWeight: 100,
+                fill: "#ffffff",
+                align: "center",        // text alignment
+                boundsAlignH: "center", // horizontal align for *bounding box* MUAHHAA I STOLE THE TEXT
+            }
+        );
+        this.text2.setTextBounds(0, 0, game.world.width, game.world.height);
+        this.text2.alpha = 0; 
+        this.fadeInText2 =  game.add.tween(this.text2).to({alpha: 1}, 1000, Phaser.Easing.Linear.None, false, 2000, -1, true);
 
         // to fade in after
-        game.camera.onFadeComplete.add(this.switchState, this);
+       game.camera.onFadeComplete.add(this.switchState, this);
+    
     },
 
 
@@ -107,12 +139,31 @@ game_state.intro.prototype = {
 */
 
     update: function() {
+        if (!this.started) {
+            this.started = true;
+            this.moveLogo.start();
+        }
+        // if (this.logo.x < canvasDimensions.width / 2) {
+        //     this.logo.x += 5;
+        //      this.logo.angle += 2;
+        // }
+
+
+
         if (this.spacebar.isDown) {
             game.camera.fade(0x000000, 1000);
         }
         if (this.aKey.isDown) {
             this.devSwitch();
         }
+    },
+
+
+
+
+    render: function() {
+        // game.debug.body(this.logo);
+        // game.debug.spriteInfo(this.logo, 32, 32);
     },
 
 

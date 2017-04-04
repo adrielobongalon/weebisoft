@@ -159,7 +159,8 @@ var textbox = {
     phaserBox: null,                                                            // ONLY PHASER SHOULD MODIFY THIS! DO NOT TOUCH!
     phaserName: null,                                                           // DITTO
     phaserText: null,                                                           // DITTO AGAIN
-    phaserGoup: null,                                                           // LIKEWISE
+    phaserTextGroup: null,                                                      // LIKEWISE
+    phaserBoxGoup: null,                                                        // WHY ARE WE YELLING?
 
     // fading stuff
     fadeInBox: null,
@@ -184,18 +185,33 @@ var textbox = {
         this.phaserName = game.add.text(this.textXoffset, this.textYoffset, "name placeholder", this.nameStyle);
         this.phaserText = game.add.text(this.textXoffset, this.textYoffset + 40, "dialogue\nplaceholder", this.textStyle);
 
-        this.phaserGroup = game.add.group();
-        this.phaserGroup.add(this.phaserBox);
-        this.phaserGroup.add(this.phaserName);
-        this.phaserGroup.add(this.phaserText);
+        this.phaserTextGroup = game.add.group();
+        this.phaserTextGroup.add(this.phaserName);
+        this.phaserTextGroup.add(this.phaserText);
 
-        this.phaserGroup.alpha = 0;
+        this.phaserBoxGroup = game.add.group();
+        this.phaserBoxGroup.add(this.phaserBox);
+        this.phaserBoxGroup.add(this.phaserTextGroup);
 
-        this.fadeInBox = game.add.tween(this.phaserGroup).to({alpha: 1}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);   // note that this fades the group,
-        this.fadeInBox.onComplete.add(function() {this.textCurrentlyFading = false;}, this);                                    // not just the box
-        this.fadeOutBox = game.add.tween(this.phaserGroup).to({alpha: 0}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
-        this.fadeInText = game.add.tween(this.phaserText).to({alpha: 1}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
-        this.fadeOutText = game.add.tween(this.phaserText).to({alpha: 0}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
+        this.phaserBoxGroup.alpha = 0;
+
+        this.fadeInBox = game.add.tween(this.phaserBoxGroup).to({alpha: 1}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);    // note that this fades the group,
+        this.fadeInBox.onComplete.add(function() {this.textCurrentlyFading = false;}, this);                                        // not just the box
+        this.fadeOutBox = game.add.tween(this.phaserBoxGroup).to({alpha: 0}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
+        this.fadeOutBox.onComplete.add(function() {
+            this.callback();
+        }, this);
+        this.fadeInText = game.add.tween(this.phaserTextGroup).to({alpha: 1}, 250, Phaser.Easing.Linear.None, false, 0, 0, false);
+        this.fadeInText.onComplete.add(function() {
+            this.textCurrentlyFading = false;
+        }, this);
+        this.fadeOutText = game.add.tween(this.phaserTextGroup).to({alpha: 0}, 250, Phaser.Easing.Linear.None, false, 0, 0, false);
+        this.fadeOutText.onComplete.add(function() {
+            this.phaserName.setText(this.currentPath.text[this.dialogueProgress][0]);   // set the new text
+            this.phaserText.setText(this.currentPath.text[this.dialogueProgress][1]);
+
+            this.fadeInText.start();                                                    //  fade it back in
+        }, this);
     },
 
 
@@ -227,10 +243,14 @@ var textbox = {
 
 
 
-    setText: function() {
-        this.phaserName.setText(this.currentPath.text[this.dialogueProgress][0]);
-        this.phaserText.setText(this.currentPath.text[this.dialogueProgress][1]);
+    // I made this a separate function, because it got messy with the onCompletes and the textCurrentlyFading
+    switchText: function() {
+        this.textCurrentlyFading = true;
+        this.fadeOutText.start();
     },
+
+
+
 
     start: function(path, callback) {
         this.dialogueRunning = true;
@@ -238,8 +258,11 @@ var textbox = {
         this.callback = callback;
         this.dialogueProgress = 0;
 
-        this.setText();
+        // set text
+        this.phaserName.setText(path.text[this.dialogueProgress][0]);
+        this.phaserText.setText(path.text[this.dialogueProgress][1]);
 
+        // fade in
         this.textCurrentlyFading = true;
         this.fadeInBox.start();
     },
@@ -248,33 +271,32 @@ var textbox = {
 
 
     next: function() {
-        if (this.currentPath.type == "redirect") {
-            
-        }
-
-
-
-
-        else if (this.currentPath.type == "options") {
-            
-        }
-
-
-
-
-        else if (this.currentPath.type == "end") {
-            this.dialogueProgress++;
-
-            if (this.callback && typeof callback === "function") {
-                this.callback();
+        if (!this.textCurrentlyFading) {
+            if (this.dialogueProgress < this.currentPath.text.length - 1) {
+                this.dialogueProgress++;
+                this.switchText();
             }
-        }
+            else {
+                if (this.currentPath.type == "redirect") {
+                    this.currentPath = this.currentPath.redirect;
+                    this.dialogueProgress = 0;
+                    this.switchText();
+                }
 
 
 
 
-        else {
-            console.error("error: invalid path type");
+                else if (this.currentPath.type == "options") {
+                    // aoeu
+                }
+
+
+
+
+                else {  // if (this.currentPath.type == "end")
+                    this.fadeOutBox.start();
+                }
+            }
         }
     },
 
