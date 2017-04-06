@@ -1,7 +1,7 @@
 /*
        document : global.js, for weebisoft
      created on : friday, january 27, 2016, 11:45 am
-         author : adrielo (audrey) bongalon
+         author : audrey
     description : global player object
 
 
@@ -164,6 +164,9 @@ var textbox = {
         boundsAlignH: "center"  // horizontal align for *bounding box*
     },
 
+
+
+
     // for saving stuff
     phaserBox: null,                                                            // ONLY PHASER SHOULD MODIFY THIS! DO NOT TOUCH!
     phaserName: null,                                                           // DITTO
@@ -189,7 +192,7 @@ var textbox = {
 
 
 
-    loadData: function() {
+    loadBoxData: function() {
         this.phaserBox = game.add.sprite(this.xOffset, this.yOffset, "textbox");    // make sure textbox is already created in the create function of each level
         this.phaserName = game.add.text(this.textXoffset, this.textYoffset, "name placeholder", this.nameStyle);
         this.phaserText = game.add.text(this.textXoffset, this.textYoffset + 40, "dialogue\nplaceholder", this.textStyle);
@@ -209,6 +212,7 @@ var textbox = {
         this.fadeOutBox = game.add.tween(this.phaserBoxGroup).to({alpha: 0}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
         this.fadeOutBox.onComplete.add(function() {
             this.callback();
+            this.resetData();
         }, this);
         this.fadeInText = game.add.tween(this.phaserTextGroup).to({alpha: 1}, 250, Phaser.Easing.Linear.None, false, 0, 0, false);
         this.fadeInText.onComplete.add(function() {
@@ -261,7 +265,7 @@ var textbox = {
 
 
 
-    start: function(path, callback) {
+    start: function(path, options, callback) {
         this.dialogueRunning = true;
         this.currentPath = path;
         this.callback = callback;       // callback is stored so that it can be run after the textbox fades out
@@ -312,16 +316,24 @@ var textbox = {
 
 
 
-    resetData: function() {         // RUN THIS AT THE END OF EVERY LEVEL
-        this.phaserBox = null;
-        this.phaserName = null;
-        this.phaserText = null;
-        this.phaserGoup = null;
+    resetData: function() {         // run at the end of every dialogue via callback after fadeout of textbox
+        this.phaserBox = null;                                                            // ONLY PHASER SHOULD MODIFY THIS! DO NOT TOUCH!
+        this.phaserName = null;                                                           // DITTO
+        this.phaserText = null;                                                           // DITTO AGAIN
+        this.phaserTextGroup = null;                                                      // LIKEWISE
+        this.phaserBoxGoup = null;                                                        // WHY ARE WE YELLING?
 
         this.fadeInBox = null;
         this.fadeOutBox = null;
         this.fadeInText = null;
-        this.fadeOutText=  null;
+        this.fadeOutText = null;
+
+        this.dialogueRunning = false;
+        this.currentPath = null;
+        this.callback = null;
+        this.dialogueProgress = 0;
+        this.textCurrentlyFading = false;
+        this.canGoToNext = true;
     }
 };
 textbox.xOffset = (canvasDimensions.width - textbox.width) / 2;

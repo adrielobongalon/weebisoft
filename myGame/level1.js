@@ -2,10 +2,10 @@
        document : level1.js, for weebisoft
      created on : monday, october 31, 2016, 10:42 am
       cloned on : tuesday, january 24, 2017, 12:06 pm
-         author : adrielo (audrey) bongalon
+         author : audrey + angelina
     description : js file for my game, for 11th grade video game programming expeditions course
 
-ウィビソフト
+weebisoft - ウィビソフト
 
                                                                                                                          ,
                                                                                                                   ,  ,g8^`8,
@@ -226,12 +226,15 @@ game_state.level1.prototype = {
                              null);                                             // redirect
 
         // preload textbox (with placeholder text) and fades
-        textbox.loadData();
+        textbox.loadBoxData();
+
+        // empty array for the options to be stored
+        this.textOptions = {};
 
         // start the dialogue scene
         yuu.phaserData.fadeYuuAnimation.onComplete.add(function() {
             window.setTimeout(function() {                      // delay dialogue so player can see the opening scenery
-                textbox.start(_this.path3, function() {
+                textbox.start(_this.path3, this.textOptions, function() {
                     yuu.canMoov = true;                         // enable movement after dialogue
                 });
             }, 1000);
@@ -257,6 +260,11 @@ game_state.level1.prototype = {
         this.tutorialMoveText.setTextBounds(0, 0, canvasDimensions.width, canvasDimensions.height);
         this.tutorialMoveText.alpha = 0;
         this.tutorialFade = game.add.tween(this.tutorialMoveText).to({alpha: 1}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
+
+        this.tutorialDoorText = game.add.text(0, canvasDimensions.height / 3, "Press ENTER while touching door to interact.", textbox.tutorialStyle);
+        this.tutorialDoorText.setTextBounds(game.world.width - canvasDimensions.width, 0, canvasDimensions.width, canvasDimensions.height);
+        this.tutorialDoorText.alpha = 0;
+        this.tutorialFade2 = game.add.tween(this.tutorialDoorText).to({alpha: 1}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
 
 
 
@@ -301,8 +309,8 @@ game_state.level1.prototype = {
             console.log("yuu spawned");
         }, this);
         game.camera.onFadeComplete.add(function() {
-            console.log("switching to end state");
-            game.state.start("ending");
+            console.log("switching to level2");
+            game.state.start("level2");
         }, this);
 
 
@@ -355,8 +363,14 @@ game_state.level1.prototype = {
 
 
         // collision detection
-        game.physics.arcade.collide(yuu.phaserData, this.platforms);                                                // yuu on platforms
+        game.physics.arcade.collide(yuu.phaserData, this.platforms);                                                        // yuu on platforms
         game.physics.arcade.overlap(yuu.phaserData, this.openDoor, function() {this.tutorialFade.start();}, null, this);    // yuu with door
+        game.physics.arcade.overlap(yuu.phaserData, this.endDoor, function() {this.tutorialFade2.start();}, null, this);    // yuu with other door
+        game.physics.arcade.overlap(yuu.phaserData, this.endDoor, function() {
+            if (this.otherKeys.enter.isDown) {
+                game.camera.fade(0x000000, 1000);   // end the level
+            }
+        }, null, this);    // yuu with door
 
 
 

@@ -2,20 +2,43 @@
        document : intro.js, for weebisoft
      created on : thursday, november 10, 2016, 09:33 am
       cloned on : thursday, january 26, 2017, 11:57 am
-         author : adrielo (audrey) bongalon
+         author : audrey + angelina
     description : intro, for 11th grade video game programming expeditions course
 
+weebisoft - ウィビソフト
 
-                                      88
-                                      88
-                                      88
-    ,adPPYYba,  88       88   ,adPPYb,88  8b,dPPYba,   ,adPPYba,  8b       d8
-    ""     `Y8  88       88  a8"    `Y88  88P'   "Y8  a8P,,,,,88  `8b     d8'
-    ,adPPPPP88  88       88  8b      :88  88          8PP"""""""   `8b   d8'
-    88,    ,88  "8a,   ,a88  "8a,   ,d88  88          "8b,   ,aa    `8b,d8'
-    `"8bbdP"Y8   `"YbbdP'Y8   `"8bbdP"Y8  88           `"Ybbd8"'      Y88'
-                                                                      d8'
-                                                                     d8'
+                                                                                                                         ,
+                                                                                                                  ,  ,g8^`8,
+                                                                                                               ,g8^`8,    `88,
+                ,oooooooooo,                                                            ,oooooooooo,         `88,    `88,   `88,
+                888      888                                           ,,,              888      888           `88,    `88,  ,88,
+ ,oooooooooooooo888      888oooooooooooooo,                           ,d8^`8go,         888      888             `88,   ,8Ygo""
+888                                     888                          o8P"    `Ybo,      888      888         ,,,,oo88bo88b,
+888      ,oooooooooooooooooooooooo      888                       ,o88"       ,88"      888      8888P^^"""""           `88b,
+888      888                   888      888                   ,,88P^"       ,o8"        888                     ,,,,,,oo8888,
+888      888                   88"      888              ,,o88P^"        ,odP"          888      8888P^^^^^^""""
+888      888                 ,88"       88"         ,,o88P^"           o88"             888      888
+"88oooooo88"               ,d8P"       d8P    ,,d8P^""          ,      888              888      888
+                       ,,o8P"        ,d8P      `Y8,        ,,o888      888              888      888
+                ,,,od8P^"          ,d8P"          `Yo,,gdP^^""888      888              888      Y88 
+      `8888888^^""             ,,d8P"               `""       888      888              Y88      `^Y8booooooooooooooooooooooo
+       `88                ,,o888^"                            888      888               `8o,                            d8P"
+        `Y8g,,,,,,,,,,,gd88P^"                                "88oooooo88"                 `^Y8888888888888888888888888888P"
+
+       ,                                                                                   ,ooooooooooo,
+   ,o8^88,                   88888oooo,,   oooooooooooooooooooooooooooooooodP^Y8b,         888      888"
+ `88"    `88,                88"     `88"  888                                   Y8b       888      888
+   `88,    `88,             ,88       88"  `"""""""""""""""""""""""""""888       888       888      888
+     `88,   `88,           ,88"      ,88                              ,888      ,88"       888      888,,,
+       `88,  ,88"         ,d8"      ,88"                             ,88P"     ,88P        888           """Yboo,,
+        `88v88"          ,88"      ,88"                             ,88P"     ,88P         888      ,,          ""Yboo,,
+          ""           ,88"       ,88"                            ,d8P"      ,88"          888      888boo,,         ,888"
+                     ,88"       ,o8P"                          ,o88^"      ,88"            888      888    ""Y8oo,, ,888"
+                 ,o8P"        ,d8P"                     ,,oo88^""       ,88P"              888      888          """"""
+            ,,o8P^"        ,d88^"             `88888888^^""         ,,88P"                 888      888
+    ,,,,god8P^"        ,,d8P^"                 `88             ,,o88P^"                    888      888
+     `8b,         ,,od8P^"                      `Y8g,,,,,888888P^""                        888      888
+       `Y8g,,,gd88P^"                                                                      "88oooooo88"
 */
 
 /* global Phaser game_state game canvasDimensions */                                             // tells the IDE that Phaser exists in another file
