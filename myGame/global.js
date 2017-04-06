@@ -182,10 +182,7 @@ var textbox = {
     phaserText: null,                                                           // DITTO AGAIN
     phaserTextGroup: null,                                                      // LIKEWISE
     phaserBoxGoup: null,                                                        // WHY ARE WE YELLING?
-    optionsObject: {                                                            // this one's fine to modify though
-        numberOfOptions: 0,
-        options: []             // will contain the sprites and text
-    },
+    options: [],                                                                // this one's fine to modify though, contains the sprites and text
 
     // fading stuff
     fadeInBox: null,
@@ -279,14 +276,18 @@ var textbox = {
 
 
     createOptions: function(options) {  // options is a double array with 5 items MAX
+        var _this_textbox = this;
+
+        // positioning stuff for all the options (as a group) + sizing
         var marginYTop = 40;
         var marginYBottom = (canvasDimensions.height - this.yOffset) + 20;
         var spaceBetween = 15;
         var workableArea = canvasDimensions.height - marginYTop - marginYBottom;
         var textboxHeight = ((workableArea - ((options.length - 1) * spaceBetween)) / options.length);
-        this.optionsObject.numberOfOptions = options.length;
 
         for (i = 0; i < options.length; i++) {
+
+            // box positioning
             var boxXpos = this.xOffset;
             var boxYpos = marginYTop + (i * (textboxHeight + spaceBetween));
             var boxWidth = textbox.width;
@@ -296,6 +297,10 @@ var textbox = {
             var scaleY = textboxHeight / 110;   // dividend should be height of options.jpg in pixels
             box.scale.setTo(1, scaleY);
 
+
+
+
+            // text display and positioning
             var text = game.add.text(0, 0, options[i][0], textbox.optionsStyle);
             text.setTextBounds(boxXpos, boxYpos, boxWidth, boxHeight);
 
@@ -303,11 +308,46 @@ var textbox = {
             group.add(box);
             group.add(text);
 
-            group.alpha = 0;
-            var fade = game.add.tween(group).to({alpha: 1}, 500, Phaser.Easing.Linear.None, false, i * 200, 0, false);
-            fade.start();
 
-            this.optionsObject.options[i] = [box, text, fade];
+
+
+            // fading stuff
+            group.alpha = 0;
+            var fadeIn = game.add.tween(group).to({alpha: 1}, 500, Phaser.Easing.Linear.None, false, i * 200, 0, false);
+            fadeIn.start();
+            
+            var fadeOut = game.add.tween(group).to({alpha: 0}, 500, Phaser.Easing.Linear.None, false, i * 200, 0, false);
+            var currentlyFading = false;
+
+
+
+
+            // selection handling
+            box.inputEnabled = true;      // create event listener for clicks
+            box.events.onInputDown.add(_this_textbox.onOptionSelect, {parameter: options[i][1]});
+
+
+
+
+            // store all the options
+            this.options[i] = [box, text, fadeOut, currentlyFading];
+        }
+    },
+
+
+
+
+    onOptionSelect: function() {
+        if (!textbox.options[0][3]) {                                           // check the first box to see if it is currently fading
+            for (i = 0; i < textbox.options.length; i++) {
+                textbox.options[i][0].inputEnabled = false;                     // disable input
+                textbox.options[i][3] = true;                                   // set currentlyFading to true
+                textbox.options[i][2].start();                                  // start fade
+            }
+    
+            textbox.currentPath = this.parameter;   // make the redirect the new currentPath
+            textbox.dialogueProgress = 0;
+            textbox.switchText();
         }
     },
 
@@ -368,11 +408,12 @@ var textbox = {
 
 
     resetData: function() {         // run at the end of every dialogue via callback after fadeout of textbox
-        this.phaserBox = null;                                                            // ONLY PHASER SHOULD MODIFY THIS! DO NOT TOUCH!
-        this.phaserName = null;                                                           // DITTO
-        this.phaserText = null;                                                           // DITTO AGAIN
-        this.phaserTextGroup = null;                                                      // LIKEWISE
-        this.phaserBoxGoup = null;                                                        // WHY ARE WE YELLING?
+        this.phaserBox = null;
+        this.phaserName = null;
+        this.phaserText = null;
+        this.phaserTextGroup = null;
+        this.phaserBoxGoup = null;
+        this.options = [];
 
         this.fadeInBox = null;
         this.fadeOutBox = null;

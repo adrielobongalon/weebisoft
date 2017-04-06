@@ -194,7 +194,7 @@ game_state.level1.prototype = {
                              "end", null, null);                                                // type, options, and redirect
 
 
-        this.path4 = new Path([["Voice","No need to be so rude. I'm here to help you"],         // dialogue
+        this.path4 = new Path([["Voice","There's no need to be so rude. I'm here to help you"], // dialogue
                               ["Yuu", "Help me?"],
                               ["Voice", "Yes. And you need to find a weapon. Now."]],
                              "end", null, null);                                                // type, options, redirect
@@ -207,7 +207,7 @@ game_state.level1.prototype = {
 
 
         this.path6 = new Path([["Voice", "You’re wasting time, stop being so childish."]],      // dialogue
-                             "redirect", null, this.path2);                                        // type, options, redirect
+                             "redirect", null, this.path4);                                     // type, options, redirect
 
 
         this.path5 = new Path([["Voice", "I know you can hear me."]],           // dialogue
