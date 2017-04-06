@@ -62,6 +62,7 @@ var yuu = {
     canRun: true,       // TODO     REMOVE RUN UNTIL DOWNSTAIRS
     running: false,
     touchingGround: true,
+    canUseCamera: true,
 
     // animation data
     alpha: 0,
@@ -101,6 +102,8 @@ var yuu = {
         // order to of frames to run moving animation
         this.phaserData.animations.add("left", [0, 2, 1, 2], 5, true);
         this.phaserData.animations.add("right", [6, 4, 5, 4], 5, true);
+
+        this.phaserData.frame = 3;                                              // start facing forwards
     },
     grow: function(value) {
         if (this.hbHeight < 500) {

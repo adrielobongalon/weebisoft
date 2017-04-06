@@ -40,7 +40,7 @@ weebisoft - ウィビソフト
        `Y8g,,,gd88P^"                                                                      "88oooooo88"
 */
 
-/* global Phaser game game_state yuu groundSpriteDimensions textbox Path */
+/* global Phaser game game_state canvasDimensions yuu textbox Path groundSpriteDimensions */
 
 // var debugRect = new Phaser.Rectangle(150, 445, 725, 110);                    // TODO     DELETE ME
 
@@ -62,10 +62,16 @@ game_state.level2.prototype = {
 */
 
 	preload: function() {
-        game.load.image("grid", "assets/debug-grid-1920x1920.png");             // TODO stairs on left in background
+        game.load.image("grid", "assets/debug-grid-1920x1920.png");
+        game.load.image("wall", "assets/wall.png");
         game.load.image("ground", "assets/platform.png");
         game.load.spritesheet("audrey", "assets/audrey_pixel_sprite.png", 136, 224);
+        game.load.image("back wall", "assets/backWall.png");
+        game.load.image("front wall", "assets/frontWall.png");
+        game.load.image("door", "assets/door.png");
+        game.load.image("door overlay", "assets/doorOverlay.jpg");
         game.load.image("textbox", "assets/textbox.jpg");
+        game.load.image("options box", "assets/optionsBox.jpg");
 	},
 
 
@@ -89,10 +95,11 @@ game_state.level2.prototype = {
 */
 
     create: function() {
+        var _this = this;                                                       // hack-y way to store the context
         game.physics.startSystem(Phaser.Physics.ARCADE);                        // creates the in-game physics from the phaser library
 
         // adds sprites
-        game.add.tileSprite(0, 0, 1920, 1920, "grid");                          // add background
+        game.add.tileSprite(0, 0, 1920, 1920, "wall");                          // add background
         game.world.setBounds(0, 0, 1920, game.world.height);
 
 
@@ -119,17 +126,135 @@ game_state.level2.prototype = {
 
 
 
+        // add back wall and open door (yuu will cover this)
+        this.backWall = game.add.sprite(840, 0, "back wall");                   // xPos: frontWall xPos - sprite width
+        this.openDoor = game.add.sprite(712, 253, "door");                      // x: frontWall xPos - sprite width, y: canvas height - door height - ground height
+        game.physics.arcade.enable(this.openDoor);
+        
+        this.endDoor = game.add.sprite(1670, 253, "door");                      // x: LEVEL width - door width - 100px, y: canvas height - door height - ground height
+        game.physics.arcade.enable(this.endDoor);
+        this.endDoorOverlay = game.add.sprite(1670, 253, "door overlay");       // same positioning coordinates as endDoor
+        this.endDoorOverlay.alpha = 0;                                                                              // lol i just noticed "endDoor" sounds like "endor"
+        game.add.tween(this.endDoorOverlay).to({alpha: 0.25}, 1000, Phaser.Easing.Linear.None, true, 0, -1, true);  // you know. the place in star wars with the ewoks?
+
+
+
+
+
+
+
+
         // add yuu sprite
         yuu.phaserData = game.add.sprite(10, game.world.height - this.groundHeight - yuu.height, "audrey");
         yuu.spawn(1, 1);
 
-        yuu.canMoov = false;
         yuu.phaserData.alpha = 0;
+
+        // yuu animation
         yuu.phaserData.frame = 3;                                               // start facing forwards
 
         // fades yuu in
         yuu.phaserData.fadeYuuAnimation = game.add.tween(yuu.phaserData);
         yuu.phaserData.fadeYuuAnimation.to({alpha: 1}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
+
+        // yuu cannot move on start (player must go through dialogue)
+        yuu.canMoov = false;
+        yuu.canUseCamera = false;
+        // yuu.canMoov = true;                                                     // set us to true to skip dialogue (for development use only!)
+        // yuu.canUseCamera = true;
+
+
+
+
+
+
+
+
+        // add front wall (this will cover yuu)
+        this.frontWall = game.add.sprite(862, 0, "front wall"); // xPos: canvas width - sprite width - 40px
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // dialogue paths (defined in order so that paths are already defined when they are referenced within the objects)
+        this.path2 = new Path([["Voice", "Liar.\nNothing's happened yet."]],    // dialogue
+                              "end", null, null);                               // type, options, and redirect
+
+
+        this.path3 = new Path([["Voice","Wait."],                               // dialogue
+                               ["Voice", "What about now?"]],
+                              "end", null, null);                               // type, options, redirect
+
+
+        this.path4 = new Path([["Voice","Hold on."]],                           // dialogue
+                              "end", null, null);                               // type, options, redirect
+
+
+        this.path5 = new Path([["Voice","That doesn't sound good."]],           // dialogue
+                              "end", null, null);                               // type, options, redirect
+
+
+        this.path6 = new Path([["Voice","Dammit. Run."]],                       // dialogue
+                              "end", null, null);                               // type, options, redirect
+
+    
+        this.path1 = new Path([["Voice", "Did you hear that?"]],                // dialogue
+                              "options",                                        // type
+                              [["Yes.", this.path2],                            // options
+                               ["No...", this.path3],
+                               ["What are you talking about?", this.path4]],
+                              null);                                            // redirect
+
+        // preload textbox (with placeholder text) and fades
+        textbox.loadBoxData();
+
+        // start the dialogue scene
+        yuu.phaserData.fadeYuuAnimation.onComplete.add(function() {
+            window.setTimeout(function() {                      // delay dialogue to make sure the game has faded in
+                textbox.start(_this.path1, function() {
+                    yuu.canMoov = true;                         // enable movement & camera after dialogue
+                    yuu.canUseCamera = true;
+                });
+            }, 500);
+        }, this);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // tutorial text
+        this.tutorialMoveText = game.add.text(0, canvasDimensions.height / 3, "Press Z and X to move the camera.", textbox.tutorialStyle);
+        this.tutorialMoveText.setTextBounds(0, 0, canvasDimensions.width, canvasDimensions.height);
+        this.tutorialMoveText.alpha = 0;
+        this.tutorialFade = game.add.tween(this.tutorialMoveText).to({alpha: 1}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
+
+        this.tutorialDoorText = game.add.text(0, canvasDimensions.height / 3, "Press ENTER while touching flashing objects to interact.", textbox.tutorialStyle);
+        this.tutorialDoorText.setTextBounds(game.world.width - canvasDimensions.width, 0, canvasDimensions.width, canvasDimensions.height);
+        this.tutorialDoorText.alpha = 0;
+        this.tutorialFade2 = game.add.tween(this.tutorialDoorText).to({alpha: 1}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
 
 
 
@@ -149,13 +274,12 @@ game_state.level2.prototype = {
         // keyboard controls
         this.arrowKeys = game.input.keyboard.createCursorKeys();
         this.otherKeys = game.input.keyboard.addKeys({
-                                                        "s": Phaser.KeyCode.S,
                                                         "z": Phaser.KeyCode.Z,
-                                                        "n": Phaser.KeyCode.N,
-                                                        "a": Phaser.KeyCode.A,
-                                                        "e": Phaser.KeyCode.E,
+                                                        "x": Phaser.KeyCode.X,
                                                         "d": Phaser.KeyCode.D,
-                                                        "shift": Phaser.Keyboard.SHIFT
+                                                        "shift": Phaser.Keyboard.SHIFT,
+                                                        "space": Phaser.Keyboard.SPACEBAR,
+                                                        "enter": Phaser.Keyboard.ENTER
                                                     });
 
 
@@ -166,8 +290,15 @@ game_state.level2.prototype = {
 
 
         // for fading in and fading out
-        game.camera.onFlashComplete.add(this.fadeYuu, this);
-        game.camera.onFadeComplete.add(this.switchState, this);
+        game.camera.onFlashComplete.add(function() {
+            yuu.phaserData.fadeYuuAnimation.start();                            // fade in
+            yuu.phaserData.body.gravity.y = 2100;                               // enable gravity
+            console.log("yuu spawned");
+        }, this);
+        game.camera.onFadeComplete.add(function() {
+            console.log("switching to level2");
+            game.state.start("level2");
+        }, this);
 
 
 
@@ -175,7 +306,6 @@ game_state.level2.prototype = {
         // to make sure that the fade in runs only once, and that switchState function is called only once
         this.started = false;
         this.switching = false;
-        this.dialogueComplete = false;
     },
 
 
@@ -199,10 +329,17 @@ game_state.level2.prototype = {
 */
 
     update: function() {
-        // fade in
+
         if (!this.started) {
             this.started = true;
-            game.camera.flash(0x000000, 1000);
+            game.camera.flash(0x000000, 1000);                                  // fade in
+        }
+
+        // note: this can't all be one function because the keys are defined on the level files, and not on the global file
+        if (textbox.dialogueRunning) {
+            if (textbox.checkNextKeys(this.otherKeys)) {
+                textbox.next();
+            }
         }
 
 
@@ -213,8 +350,17 @@ game_state.level2.prototype = {
 
 
         // collision detection
-        game.physics.arcade.collide(yuu.phaserData, this.platforms);                                // yuu on platforms
-        // game.physics.arcade.overlap(yuu.phaserData, this.stars, this.collectStars, null, this);    // player on stars
+        yuu.touchingGround = false;     // temporarily set to false, callback function below will override
+        game.physics.arcade.collide(yuu.phaserData, this.platforms, function() {                                            // yuu on platforms
+            yuu.touchingGround = true;
+        }, null, this);
+        game.physics.arcade.overlap(yuu.phaserData, this.openDoor, function() {this.tutorialFade.start();}, null, this);    // yuu with door
+        game.physics.arcade.overlap(yuu.phaserData, this.endDoor, function() {this.tutorialFade2.start();}, null, this);    // yuu with other door
+        game.physics.arcade.overlap(yuu.phaserData, this.endDoor, function() {
+            if (this.otherKeys.enter.isDown) {
+                game.camera.fade(0x000000, 1000);   // end the level
+            }
+        }, null, this);    // yuu with door
 
 
 
@@ -286,33 +432,23 @@ game_state.level2.prototype = {
 
 
         // jumping
-        if (yuu.canMoov && this.arrowKeys.up.isDown && yuu.phaserData.body.touching.down) {
+        if (yuu.canMoov && this.arrowKeys.up.isDown && yuu.touchingGround) {
             yuu.phaserData.body.velocity.y = -500;
         }
-        if (this.otherKeys.n.isDown) {
-                this.score = 42;
-        }
-        if (this.otherKeys.s.isDown) {
-            yuu.grow(5);
-        }
-        if (this.otherKeys.z.isDown) {
-            yuu.shrink(5);
-        }
-        if (this.otherKeys.a.isDown) {
+        if (yuu.canUseCamera && this.otherKeys.z.isDown) {
             game.camera.x -= 10;
         }
-        if (this.otherKeys.e.isDown) {
+        if (yuu.canUseCamera && this.otherKeys.x.isDown) {
             game.camera.x += 10;
         }
+    },
 
 
 
 
-        // enable movement once yuu touches the ground after fading in
-        if (this.dialogueComplete) {
-            yuu.canMoov = true;
-            console.log("yuu movement enabled");
-        }
+
+
+
 
 // -----------------------------------------------------------------------------
 
@@ -323,51 +459,13 @@ game_state.level2.prototype = {
 
 
 
-// -----------------------------------------------------------------------------
-
-        // win detection
-        if (this.score >= 1 && !this.switching) {
-            this.switching = true;
-            console.log("all stars collected");
-            console.log("switching to end state");
-            game.camera.fade(0x000000, 1000);
-        }
-    },
-
-
-
-
-
-
-
-
-    fadeYuu: function() {
-        yuu.phaserData.fadeYuuAnimation.start();                                // fade in
-        yuu.phaserData.body.gravity.y = 2100;                                   // enable gravity
-        console.log("yuu spawned");
-    },
-
-
-
-
-
-
-
-
-    switchState: function() {
-        console.log("switching to end state");
-        game.state.start("ending");
-    },
-
-
-// -----------------------------------------------------------------------------
-
-    render: function() {
-        game.debug.body(yuu.phaserData);                                        // view yuu's hitbox
-        game.debug.cameraInfo(game.camera, 32, 32);
-        game.debug.spriteInfo(yuu.phaserData, 32, 120);
-        // game.debug.geom(debugRect, "rgba(255, 0, 0, 0.5)");                  // TODO     DELETE ME
-    }
+    // FOR DEVELOPMENT USE ONLY
+    // render: function() {
+    //     game.debug.body(yuu.phaserData);                                        // view yuu's hitbox
+    //     game.debug.cameraInfo(game.camera, 32, 32);
+    //     game.debug.spriteInfo(yuu.phaserData, 32, 120);
+    //     game.debug.bodyInfo(yuu.phaserData, 32, 220);
+    // }
 };
 
 game.state.add("level2", game_state.level2);

@@ -160,7 +160,9 @@ game_state.level1.prototype = {
 
         // yuu cannot move on start (player must go through dialogue)
         yuu.canMoov = false;
-        // yuu.canMoov = true;                                                     // set me to true to skip dialogue (for development use only!)
+        yuu.canUseCamera = false;
+        // yuu.canMoov = true;                                                     // set us to true to skip dialogue (for development use only!)
+        // yuu.canUseCamera = true;
 
 
 
@@ -233,7 +235,8 @@ game_state.level1.prototype = {
         yuu.phaserData.fadeYuuAnimation.onComplete.add(function() {
             window.setTimeout(function() {                      // delay dialogue so player can see the opening scenery
                 textbox.start(_this.path1, function() {
-                    yuu.canMoov = true;                         // enable movement after dialogue
+                    yuu.canMoov = true;                         // enable movement & camera after dialogue
+                    yuu.canUseCamera = true;
                 });
             }, 1000);
         }, this);
@@ -259,7 +262,7 @@ game_state.level1.prototype = {
         this.tutorialMoveText.alpha = 0;
         this.tutorialFade = game.add.tween(this.tutorialMoveText).to({alpha: 1}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
 
-        this.tutorialDoorText = game.add.text(0, canvasDimensions.height / 3, "Press ENTER while touching door to interact.", textbox.tutorialStyle);
+        this.tutorialDoorText = game.add.text(0, canvasDimensions.height / 3, "Press ENTER while touching flashing objects to interact.", textbox.tutorialStyle);
         this.tutorialDoorText.setTextBounds(game.world.width - canvasDimensions.width, 0, canvasDimensions.width, canvasDimensions.height);
         this.tutorialDoorText.alpha = 0;
         this.tutorialFade2 = game.add.tween(this.tutorialDoorText).to({alpha: 1}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
@@ -304,6 +307,8 @@ game_state.level1.prototype = {
             console.log("yuu spawned");
         }, this);
         game.camera.onFadeComplete.add(function() {
+            yuu.phaserData.frame = 3;
+            yuu.phaserData = null;
             console.log("switching to level2");
             game.state.start("level2");
         }, this);
@@ -443,10 +448,10 @@ game_state.level1.prototype = {
         if (yuu.canMoov && this.arrowKeys.up.isDown && yuu.touchingGround) {
             yuu.phaserData.body.velocity.y = -500;
         }
-        if (this.otherKeys.z.isDown) {
+        if (yuu.canUseCamera && this.otherKeys.z.isDown) {
             game.camera.x -= 10;
         }
-        if (this.otherKeys.x.isDown) {
+        if (yuu.canUseCamera && this.otherKeys.x.isDown) {
             game.camera.x += 10;
         }
     },
