@@ -26,7 +26,7 @@ var canvasDimensions = {width: 1024, height: 576};
 var game = new Phaser.Game(canvasDimensions.width, canvasDimensions.height, Phaser.AUTO, "canvas");
 var game_state = {};
 
-var i = 0;
+var i = 0;      // TODO delete me
 
 
 
@@ -154,6 +154,15 @@ var textbox = {
         fontWeight: 100,
         fill: "#000000"
     },
+    tutorialStyle: {
+        font: "20px Finger Paint",
+        fontWeight: 100,
+        fill: "#ffffff",
+        stroke: "#000000",
+        strokeThickness: 5,
+        align: "center",        // text alignment
+        boundsAlignH: "center"  // horizontal align for *bounding box*
+    },
 
     // for saving stuff
     phaserBox: null,                                                            // ONLY PHASER SHOULD MODIFY THIS! DO NOT TOUCH!
@@ -255,7 +264,7 @@ var textbox = {
     start: function(path, callback) {
         this.dialogueRunning = true;
         this.currentPath = path;
-        this.callback = callback;
+        this.callback = callback;       // callback is stored so that it can be run after the textbox fades out
         this.dialogueProgress = 0;
 
         // set text

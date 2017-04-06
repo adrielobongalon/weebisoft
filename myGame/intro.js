@@ -82,33 +82,24 @@ game_state.intro.prototype = {
             this.fadeInText2.start();
         }, this);
 
+
+        this.textStyle = {
+            font: "20px Finger Paint",
+            fontWeight: 100,
+            fill: "#ffffff",
+            align: "center",        // text alignment
+            boundsAlignH: "center", // horizontal align for *bounding box*
+        };
+
         //first text
-        this.text1 = game.add.text(0, canvasDimensions.height * (2 / 3),
-            "ウィビソフト presents:\nCan You Hear Me?\n",
-            {
-                font: "20px Finger Paint",
-                fontWeight: 100,
-                fill: "#ffffff",
-                align: "center",        // text alignment
-                boundsAlignH: "center", // horizontal align for *bounding box*
-            }
-        );
+        this.text1 = game.add.text(0, canvasDimensions.height * (2 / 3), "ウィビソフト presents:\nCan You Hear Me?", this.textStyle);
         this.text1.setTextBounds(0, 0, game.world.width, game.world.height);
         this.text1.alpha = 0;
 
         this.fadeInText1 =  game.add.tween(this.text1).to({alpha: 1}, 1000, Phaser.Easing.Linear.None, false, 500, 0, false);
         
         //second text
-        this.text2 =game.add.text(0, canvasDimensions.height * (7 / 8),
-           "(Press space to begin.)",
-            {
-                font: "20px Finger Paint",
-                fontWeight: 100,
-                fill: "#ffffff",
-                align: "center",        // text alignment
-                boundsAlignH: "center", // horizontal align for *bounding box* MUAHHAA I STOLE THE TEXT
-            }
-        );
+        this.text2 = game.add.text(0, canvasDimensions.height * (7 / 8), "(Press space to begin.)", this.textStyle);
         this.text2.setTextBounds(0, 0, game.world.width, game.world.height);
         this.text2.alpha = 0; 
         this.fadeInText2 =  game.add.tween(this.text2).to({alpha: 1}, 1000, Phaser.Easing.Linear.None, false, 2000, -1, true);
@@ -143,10 +134,7 @@ game_state.intro.prototype = {
             this.started = true;
             this.moveLogo.start();
         }
-        // if (this.logo.x < canvasDimensions.width / 2) {
-        //     this.logo.x += 5;
-        //      this.logo.angle += 2;
-        // }
+
 
 
 
