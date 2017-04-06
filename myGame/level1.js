@@ -72,6 +72,7 @@ game_state.level1.prototype = {
         game.load.image("door", "assets/door.png");
         game.load.image("door overlay", "assets/doorOverlay.jpg");
         game.load.image("textbox", "assets/textbox.jpg");
+        game.load.image("options box", "assets/optionsBox.jpg");
 	},
 
 
@@ -158,8 +159,8 @@ game_state.level1.prototype = {
         yuu.phaserData.fadeYuuAnimation.to({alpha: 1}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
 
         // yuu cannot move on start (player must go through dialogue)
-        // yuu.canMoov = false;                                                 // TODO set to false for final (dev tool)
-        yuu.canMoov = true;
+        yuu.canMoov = false;
+        // yuu.canMoov = true;                                                     // set me to true to skip dialogue (for development use only!)
 
 
 
@@ -228,13 +229,10 @@ game_state.level1.prototype = {
         // preload textbox (with placeholder text) and fades
         textbox.loadBoxData();
 
-        // empty array for the options to be stored
-        this.textOptions = {};
-
         // start the dialogue scene
         yuu.phaserData.fadeYuuAnimation.onComplete.add(function() {
             window.setTimeout(function() {                      // delay dialogue so player can see the opening scenery
-                textbox.start(_this.path3, this.textOptions, function() {
+                textbox.start(_this.path1, function() {
                     yuu.canMoov = true;                         // enable movement after dialogue
                 });
             }, 1000);
@@ -363,7 +361,10 @@ game_state.level1.prototype = {
 
 
         // collision detection
-        game.physics.arcade.collide(yuu.phaserData, this.platforms);                                                        // yuu on platforms
+        yuu.touchingGround = false;     // temporarily set to false, callback function below will override
+        game.physics.arcade.collide(yuu.phaserData, this.platforms, function() {                                            // yuu on platforms
+            yuu.touchingGround = true;
+        }, null, this);
         game.physics.arcade.overlap(yuu.phaserData, this.openDoor, function() {this.tutorialFade.start();}, null, this);    // yuu with door
         game.physics.arcade.overlap(yuu.phaserData, this.endDoor, function() {this.tutorialFade2.start();}, null, this);    // yuu with other door
         game.physics.arcade.overlap(yuu.phaserData, this.endDoor, function() {
@@ -442,7 +443,7 @@ game_state.level1.prototype = {
 
 
         // jumping
-        if (yuu.canMoov && this.arrowKeys.up.isDown && yuu.phaserData.body.touching.down) {
+        if (yuu.canMoov && this.arrowKeys.up.isDown && yuu.touchingGround) {
             yuu.phaserData.body.velocity.y = -500;
         }
 
@@ -458,20 +459,6 @@ game_state.level1.prototype = {
         }
         if (this.otherKeys.x.isDown) {
             game.camera.x += 10;
-        }
-
-
-
-
-
-
-
-
-        // win detection
-        if (0 >= 1 && !this.switching) {        // TODO fix condition
-            this.switching = true;
-            console.log("switching to end state");
-            game.camera.fade(0x000000, 1000);
         }
     },
 
@@ -491,20 +478,13 @@ game_state.level1.prototype = {
 
 
 
-    render: function() {
-        game.debug.body(yuu.phaserData);                                        // view yuu's hitbox
-        game.debug.cameraInfo(game.camera, 32, 32);
-        game.debug.spriteInfo(yuu.phaserData, 32, 120);
-        game.debug.bodyInfo(yuu.phaserData, 32, 220);
-    }
+    // FOR DEVELOPMENT USE ONLY
+    // render: function() {
+    //     game.debug.body(yuu.phaserData);                                        // view yuu's hitbox
+    //     game.debug.cameraInfo(game.camera, 32, 32);
+    //     game.debug.spriteInfo(yuu.phaserData, 32, 120);
+    //     game.debug.bodyInfo(yuu.phaserData, 32, 220);
+    // }
 };
 
 game.state.add("level1", game_state.level1);
-
-
-/*
-
-notes:
--use "deadzone" property of camera?
-
-*/

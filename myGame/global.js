@@ -61,6 +61,7 @@ var yuu = {
     canMoov: true,
     canRun: true,       // TODO     REMOVE RUN UNTIL DOWNSTAIRS
     running: false,
+    touchingGround: true,
 
     // animation data
     alpha: 0,
@@ -154,6 +155,14 @@ var textbox = {
         fontWeight: 100,
         fill: "#000000"
     },
+    optionsStyle: {
+        font: "16px Finger Paint",
+        fontWeight: 100,
+        fill: "#000000",
+        align: "center",        // text alignment
+        boundsAlignH: "center", // horizontal align for *bounding box*
+        boundsAlignV: "middle"  // vertical align
+    },
     tutorialStyle: {
         font: "20px Finger Paint",
         fontWeight: 100,
@@ -173,6 +182,10 @@ var textbox = {
     phaserText: null,                                                           // DITTO AGAIN
     phaserTextGroup: null,                                                      // LIKEWISE
     phaserBoxGoup: null,                                                        // WHY ARE WE YELLING?
+    optionsObject: {                                                            // this one's fine to modify though
+        numberOfOptions: 0,
+        options: []             // will contain the sprites and text
+    },
 
     // fading stuff
     fadeInBox: null,
@@ -265,7 +278,43 @@ var textbox = {
 
 
 
-    start: function(path, options, callback) {
+    createOptions: function(options) {  // options is a double array with 5 items MAX
+        var marginYTop = 40;
+        var marginYBottom = (canvasDimensions.height - this.yOffset) + 20;
+        var spaceBetween = 15;
+        var workableArea = canvasDimensions.height - marginYTop - marginYBottom;
+        var textboxHeight = ((workableArea - ((options.length - 1) * spaceBetween)) / options.length);
+        this.optionsObject.numberOfOptions = options.length;
+
+        for (i = 0; i < options.length; i++) {
+            var boxXpos = this.xOffset;
+            var boxYpos = marginYTop + (i * (textboxHeight + spaceBetween));
+            var boxWidth = textbox.width;
+            var boxHeight = textboxHeight;
+
+            var box = game.add.sprite(boxXpos, boxYpos, "options box");
+            var scaleY = textboxHeight / 110;   // dividend should be height of options.jpg in pixels
+            box.scale.setTo(1, scaleY);
+
+            var text = game.add.text(0, 0, options[i][0], textbox.optionsStyle);
+            text.setTextBounds(boxXpos, boxYpos, boxWidth, boxHeight);
+
+            var group = game.add.group();
+            group.add(box);
+            group.add(text);
+
+            group.alpha = 0;
+            var fade = game.add.tween(group).to({alpha: 1}, 500, Phaser.Easing.Linear.None, false, i * 200, 0, false);
+            fade.start();
+
+            this.optionsObject.options[i] = [box, text, fade];
+        }
+    },
+
+
+
+
+    start: function(path, callback) {
         this.dialogueRunning = true;
         this.currentPath = path;
         this.callback = callback;       // callback is stored so that it can be run after the textbox fades out
@@ -285,25 +334,27 @@ var textbox = {
 
     next: function() {
         if (!this.textCurrentlyFading) {
+
+            // if there is moar text, switch to that
             if (this.dialogueProgress < this.currentPath.text.length - 1) {
                 this.dialogueProgress++;
                 this.switchText();
             }
+
+
+
+            // otherwise, redirect, display the options, or end the dialogue
             else {
                 if (this.currentPath.type == "redirect") {
-                    this.currentPath = this.currentPath.redirect;
+                    this.currentPath = this.currentPath.redirect;   // make the redirect the new currentPath
                     this.dialogueProgress = 0;
                     this.switchText();
                 }
 
 
-
-
                 else if (this.currentPath.type == "options") {
-                    // aoeu
+                    this.createOptions(this.currentPath.options);
                 }
-
-
 
 
                 else {  // if (this.currentPath.type == "end")
