@@ -64,7 +64,7 @@ game_state.level1.prototype = {
 
 	preload: function() {
         game.load.image("grid", "assets/debug-grid-1920x1920.png");
-        game.load.image("wall", "assets/TESTwall.png");
+        game.load.image("wall", "assets/wall.png");
         game.load.image("ground", "assets/platform.png");
         game.load.spritesheet("audrey", "assets/audrey_pixel_sprite.png", 136, 224);
         game.load.image("back wall", "assets/backWall.png");
@@ -100,7 +100,7 @@ game_state.level1.prototype = {
         game.physics.startSystem(Phaser.Physics.ARCADE);                        // creates the in-game physics from the phaser library
 
         // adds sprites
-        game.add.tileSprite(0, 0, 1920, 1920, "grid");                          // add background
+        game.add.tileSprite(0, 0, 1920, 1920, "wall");                          // add background
         game.world.setBounds(0, 0, 1920, game.world.height);
 
 
@@ -189,42 +189,42 @@ game_state.level1.prototype = {
 
         // dialogue paths (defined in order so that paths are already defined when they are referenced within the objects)
         this.path2 = new Path([["Voice", "Good, I have something important to tell you."],      // dialogue
-                              ["Yuu", "What is it?"],
-                              ["Voice", "You need to go. Arm yourself quickly."]],
-                             "end", null, null);                                                // type, options, and redirect
+                               ["Yuu", "What is it?"],
+                               ["Voice", "You need to go. Arm yourself quickly."]],
+                              "end", null, null);                                               // type, options, and redirect
 
 
         this.path4 = new Path([["Voice","There's no need to be so rude. I'm here to help you"], // dialogue
-                              ["Yuu", "Help me?"],
-                              ["Voice", "Yes. And you need to find a weapon. Now."]],
-                             "end", null, null);                                                // type, options, redirect
+                               ["Yuu", "Help me?"],
+                               ["Voice", "Yes. And you need to find a weapon. Now."]],
+                              "end", null, null);                                               // type, options, redirect
 
 
         this.path3 = new Path([["Voice", "You’re a terrible liar.\nOne could only respond after being prompted with a question."],  // dialogue
-                              ["Voice", "Surely you didn’t think I’d believe you."],
-                              ["Yuu", "Leave me alone."]],
-                             "redirect", null, this.path4);                                                                            // type, options, redirect
+                               ["Voice", "Surely you didn’t think I’d believe you."],
+                               ["Yuu", "Leave me alone."]],
+                              "redirect", null, this.path4);                                                                        // type, options, redirect
 
 
         this.path6 = new Path([["Voice", "You’re wasting time, stop being so childish."]],      // dialogue
-                             "redirect", null, this.path4);                                     // type, options, redirect
+                              "redirect", null, this.path4);                                    // type, options, redirect
 
 
         this.path5 = new Path([["Voice", "I know you can hear me."]],           // dialogue
-                             "options",                                         // type
-                             [["Fine. I can.", this.path2],                     // options
-                              ["*remain silent*", this.path6]],
-                             null);
+                              "options",                                        // type
+                              [["Fine. I can.", this.path2],                    // options
+                               ["*remain silent*", this.path6]],
+                              null);
 
     
-        this.path1 = new Path([["Voice", "Can you hear me?"]],                  // dialogue
-                             "options",                                         // type
-                             [["Yes.", this.path2],                             // options
-                              ["Um...\nYeah?", this.path2],
-                              ["No.", this.path3],
-                              ["Leave me alone.", this.path4],
-                              ["*don't answer*", this.path5]],
-                             null);                                             // redirect
+        this.path1 = new Path([["Mysterious Voice", "Can you hear me?"]],       // dialogue
+                              "options",                                        // type
+                              [["Yes.", this.path2],                            // options
+                               ["Um...\nYeah?", this.path2],
+                               ["No.", this.path3],
+                               ["Leave me alone.", this.path4],
+                               ["*don't answer*", this.path5]],
+                              null);                                            // redirect
 
         // preload textbox (with placeholder text) and fades
         textbox.loadBoxData();
@@ -282,9 +282,6 @@ game_state.level1.prototype = {
         // keyboard controls
         this.arrowKeys = game.input.keyboard.createCursorKeys();
         this.otherKeys = game.input.keyboard.addKeys({
-                                                        "q": Phaser.KeyCode.Q,
-                                                        "a": Phaser.KeyCode.A,
-                                                        "n": Phaser.KeyCode.N,
                                                         "z": Phaser.KeyCode.Z,
                                                         "x": Phaser.KeyCode.X,
                                                         "d": Phaser.KeyCode.D,
@@ -445,14 +442,6 @@ game_state.level1.prototype = {
         // jumping
         if (yuu.canMoov && this.arrowKeys.up.isDown && yuu.touchingGround) {
             yuu.phaserData.body.velocity.y = -500;
-        }
-
-        // dev commands
-        if (this.otherKeys.q.isDown) {
-            yuu.grow(5);
-        }
-        if (this.otherKeys.a.isDown) {
-            yuu.shrink(5);
         }
         if (this.otherKeys.z.isDown) {
             game.camera.x -= 10;
