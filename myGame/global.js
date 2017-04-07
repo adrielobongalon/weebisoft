@@ -224,7 +224,9 @@ var textbox = {
         this.fadeInBox.onComplete.add(function() {this.textCurrentlyFading = false;}, this);                                        // not just the box
         this.fadeOutBox = game.add.tween(this.phaserBoxGroup).to({alpha: 0}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
         this.fadeOutBox.onComplete.add(function() {
-            this.callback();
+            if (this.callback && typeof this.callback === "function") {
+                this.callback();
+            }
             this.resetData();
         }, this);
         this.fadeInText = game.add.tween(this.phaserTextGroup).to({alpha: 1}, 250, Phaser.Easing.Linear.None, false, 0, 0, false);

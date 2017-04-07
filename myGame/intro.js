@@ -91,7 +91,7 @@ game_state.intro.prototype = {
     create: function() {
         game.stage.backgroundColor = "#000000";                                 // plain black background
         this.spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);   // adds event listener on spacebar
-        this.aKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
+        this.nKey = game.input.keyboard.addKey(Phaser.Keyboard.N);
 
         //adds the logo come in spinning
         this.logoWidth = 335 * 0.5;     // multiply image width by scale x
@@ -164,7 +164,7 @@ game_state.intro.prototype = {
         if (this.spacebar.isDown) {
             game.camera.fade(0x000000, 1000);
         }
-        if (this.aKey.isDown) {
+        if (this.nKey.isDown) {
             this.devSwitch();
         }
     },

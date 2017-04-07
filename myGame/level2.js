@@ -66,6 +66,7 @@ game_state.level2.prototype = {
         game.load.image("wall", "assets/wall.png");
         game.load.image("ground", "assets/platform.png");
         game.load.spritesheet("audrey", "assets/audrey_pixel_sprite.png", 136, 224);
+        game.load.image("monster", "assets/2.2.17 take the derp audrey.png");
         game.load.image("back wall", "assets/backWall.png");
         game.load.image("front wall", "assets/frontWall.png");
         game.load.image("door", "assets/door.png");
@@ -99,8 +100,8 @@ game_state.level2.prototype = {
         game.physics.startSystem(Phaser.Physics.ARCADE);                        // creates the in-game physics from the phaser library
 
         // adds sprites
-        game.add.tileSprite(0, 0, 1920, 1920, "wall");                          // add background
-        game.world.setBounds(0, 0, 1920, game.world.height);
+        game.add.tileSprite(0, 0, 1920, 1920, "grid");                          // add background
+        game.world.setBounds(0, 0, 5760, game.world.height);
 
 
 
@@ -126,10 +127,8 @@ game_state.level2.prototype = {
 
 
 
-        // add back wall and open door (yuu will cover this)
-        this.backWall = game.add.sprite(840, 0, "back wall");                   // xPos: frontWall xPos - sprite width
-        this.openDoor = game.add.sprite(712, 253, "door");                      // x: frontWall xPos - sprite width, y: canvas height - door height - ground height
-        game.physics.arcade.enable(this.openDoor);
+        // door (yuu will cover this)
+        this.door = game.add.sprite(320, 253, "door");                          // x: 320, y: canvas height - door height - ground height
         
         this.endDoor = game.add.sprite(1670, 253, "door");                      // x: LEVEL width - door width - 100px, y: canvas height - door height - ground height
         game.physics.arcade.enable(this.endDoor);
@@ -145,7 +144,7 @@ game_state.level2.prototype = {
 
 
         // add yuu sprite
-        yuu.phaserData = game.add.sprite(10, game.world.height - this.groundHeight - yuu.height, "audrey");
+        yuu.phaserData = game.add.sprite(330, game.world.height - this.groundHeight - yuu.height, "audrey");
         yuu.spawn(1, 1);
 
         yuu.phaserData.alpha = 0;
@@ -170,8 +169,9 @@ game_state.level2.prototype = {
 
 
 
-        // add front wall (this will cover yuu)
-        this.frontWall = game.add.sprite(862, 0, "front wall"); // xPos: canvas width - sprite width - 40px
+        // add monster sprite
+        this.monster = game.add.sprite(20, game.world.height + 50, "monster");
+        this.monster.alpha = 0;
 
 
 
@@ -220,41 +220,35 @@ game_state.level2.prototype = {
         // preload textbox (with placeholder text) and fades
         textbox.loadBoxData();
 
+        // fade in monster
+        this.fadeInMonster = game.add.tween(this.monster);
+        this.fadeInMonster.to({alpha: 1, y: game.world.height - this.groundHeight - 274}, 1000, Phaser.Easing.Linear.None, false, 1000, 0, false);
+        this.fadeInMonster.onComplete.add(function() {
+            textbox.loadBoxData();
+            textbox.start(_this.path6, function() {
+                yuu.canMoov = true;                                             // enable movement & camera after dialogue
+                yuu.canUseCamera = true;
+            });
+        });
+
+        // run dialogue after camera shake
+        game.camera.onShakeComplete.add(function() {
+            window.setTimeout(function() {
+                textbox.loadBoxData();
+                textbox.start(_this.path5, function() {
+                    _this.fadeInMonster.start();
+                });
+            }, 750);
+        }, this);
+
         // start the dialogue scene
         yuu.phaserData.fadeYuuAnimation.onComplete.add(function() {
             window.setTimeout(function() {                      // delay dialogue to make sure the game has faded in
                 textbox.start(_this.path1, function() {
-                    yuu.canMoov = true;                         // enable movement & camera after dialogue
-                    yuu.canUseCamera = true;
+                    game.camera.shake(0.05, 2000);
                 });
             }, 500);
         }, this);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // tutorial text
-        this.tutorialMoveText = game.add.text(0, canvasDimensions.height / 3, "Press Z and X to move the camera.", textbox.tutorialStyle);
-        this.tutorialMoveText.setTextBounds(0, 0, canvasDimensions.width, canvasDimensions.height);
-        this.tutorialMoveText.alpha = 0;
-        this.tutorialFade = game.add.tween(this.tutorialMoveText).to({alpha: 1}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
-
-        this.tutorialDoorText = game.add.text(0, canvasDimensions.height / 3, "Press ENTER while touching flashing objects to interact.", textbox.tutorialStyle);
-        this.tutorialDoorText.setTextBounds(game.world.width - canvasDimensions.width, 0, canvasDimensions.width, canvasDimensions.height);
-        this.tutorialDoorText.alpha = 0;
-        this.tutorialFade2 = game.add.tween(this.tutorialDoorText).to({alpha: 1}, 500, Phaser.Easing.Linear.None, false, 0, 0, false);
 
 
 
@@ -354,7 +348,6 @@ game_state.level2.prototype = {
         game.physics.arcade.collide(yuu.phaserData, this.platforms, function() {                                            // yuu on platforms
             yuu.touchingGround = true;
         }, null, this);
-        game.physics.arcade.overlap(yuu.phaserData, this.openDoor, function() {this.tutorialFade.start();}, null, this);    // yuu with door
         game.physics.arcade.overlap(yuu.phaserData, this.endDoor, function() {this.tutorialFade2.start();}, null, this);    // yuu with other door
         game.physics.arcade.overlap(yuu.phaserData, this.endDoor, function() {
             if (this.otherKeys.enter.isDown) {
